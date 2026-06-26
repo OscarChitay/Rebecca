@@ -243,7 +243,7 @@ body {
 }
 
 .text-box p {
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.1rem;
 }
 
 .text-gracia {
@@ -322,7 +322,7 @@ body {
   font-family: 'Dancing Script', cursive;
   font-size: 1.1rem;
   color: #5d2e46;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.rem;
 }
 
 .signature-name {
