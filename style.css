@@ -236,7 +236,7 @@ body {
 
 /* ─── TEXT BOX ─── */
 .text-box {
-  padding: 1.5rem 0.3rem;
+  padding: 1.5rem 0.3rem 0.5rem;
   line-height: 1.9;
   font-size: 0.95rem;
   font-weight: 400;
@@ -276,7 +276,7 @@ body {
 /* ─── DIVIDER ─── */
 .divider {
   text-align: center;
-  margin: 0.6rem 0;
+  margin: 0.3rem 0 2rem;
   color: #f48fb1;
 }
 
