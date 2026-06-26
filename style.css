@@ -193,7 +193,7 @@ body {
 }
 
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: 0.8rem;
 }
 
 /* ─── POLAROID ─── */
@@ -276,7 +276,7 @@ body {
 /* ─── DIVIDER ─── */
 .divider {
   text-align: center;
-  margin: 2.5rem 0;
+  margin: 0.6rem 0;
   color: #f48fb1;
 }
 
