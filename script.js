@@ -117,10 +117,41 @@ function startMusic() {
   }
 }
 
+/* ─── LIGHTBOX ─── */
+function openLightbox(src) {
+  var lb = document.getElementById('lightbox');
+  var img = document.getElementById('lightbox-img');
+  if (!lb || !img) return;
+  img.src = src;
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  var lb = document.getElementById('lightbox');
+  if (!lb) return;
+  lb.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function initLightbox() {
+  document.addEventListener('click', function (e) {
+    var img = e.target.closest('.polaroid-frame img');
+    if (img) {
+      e.stopPropagation();
+      openLightbox(img.src);
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+}
+
 /* ─── INICIO ─── */
 document.addEventListener('DOMContentLoaded', function () {
   createPetals();
   initScrollReveal();
+  initLightbox();
 
   setTimeout(fireConfetti, 800);
 
