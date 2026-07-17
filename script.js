@@ -1,23 +1,37 @@
-/* ─── PÉTALOS FLOTANTES ─── */
+/* ─── CONFETI FLOTANTE ─── */
 function createPetals() {
   var container = document.getElementById('petals-container');
   if (!container) return;
-  var colors = ['#f48fb1', '#f06292', '#f8bbd0', '#ec407a', '#ffd1dc'];
-  for (var i = 0; i < 25; i++) {
-    var petal = document.createElement('div');
-    petal.className = 'petal';
-    var size = 10 + Math.random() * 22;
-    var isRound = Math.random() > 0.5;
-    petal.style.cssText =
-      'width:' + size + 'px;' +
-      'height:' + (size * (0.7 + Math.random() * 0.5)) + 'px;' +
-      'background:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
+  var colors = ['#c2185b', '#f48fb1', '#ce93d8', '#80deea', '#ffcc80', '#ef9a9a', '#ec407a', '#ff80ab', '#ba68c8', '#4dd0e1'];
+  var shapes = ['rect', 'circle', 'strip'];
+  for (var i = 0; i < 35; i++) {
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    var color = colors[Math.floor(Math.random() * colors.length)];
+    var shape = shapes[Math.floor(Math.random() * shapes.length)];
+    var w, h, br;
+    if (shape === 'rect') {
+      w = 8 + Math.random() * 10;
+      h = 6 + Math.random() * 8;
+      br = '2px';
+    } else if (shape === 'circle') {
+      w = h = 6 + Math.random() * 8;
+      br = '50%';
+    } else {
+      w = 3 + Math.random() * 4;
+      h = 12 + Math.random() * 14;
+      br = '2px';
+    }
+    piece.style.cssText =
+      'width:' + w + 'px;' +
+      'height:' + h + 'px;' +
+      'background:' + color + ';' +
       'left:' + (Math.random() * 100) + '%;' +
-      'animation-duration:' + (12 + Math.random() * 18) + 's;' +
-      'animation-delay:' + (Math.random() * 20) + 's;' +
-      'border-radius:' + (isRound ? '50%' : '50% 0 50% 0') + ';' +
-      'opacity:' + (0.3 + Math.random() * 0.4) + ';';
-    container.appendChild(petal);
+      'border-radius:' + br + ';' +
+      'animation-duration:' + (10 + Math.random() * 14) + 's;' +
+      'animation-delay:' + (Math.random() * 18) + 's;' +
+      'opacity:' + (0.5 + Math.random() * 0.4) + ';';
+    container.appendChild(piece);
   }
 }
 
