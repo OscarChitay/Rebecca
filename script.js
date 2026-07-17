@@ -21,6 +21,15 @@ function createPetals() {
   }
 }
 
+/* ─── CONFETTI CUMPLEAÑOS ─── */
+function fireConfetti() {
+  if (typeof confetti !== 'function') return;
+  var defaults = { spread: 360, ticks: 100, gravity: 0.6, decay: 0.94, startVelocity: 30, colors: ['#c2185b', '#f48fb1', '#ec407a', '#ffd1dc', '#ff80ab', '#fce4ec'] };
+  confetti({ ...defaults, particleCount: 60, scalar: 1.2, shapes: ['circle'] });
+  confetti({ ...defaults, particleCount: 30, scalar: 1.5, shapes: ['circle'], origin: { x: 0.2 } });
+  confetti({ ...defaults, particleCount: 30, scalar: 1.5, shapes: ['circle'], origin: { x: 0.8 } });
+}
+
 /* ─── SCROLL REVEAL ─── */
 function initScrollReveal() {
   var reveals = document.querySelectorAll('.reveal');
@@ -46,13 +55,13 @@ var musicStarted = false;
 function onYouTubeIframeAPIReady() {
   try {
     player = new YT.Player('youtube-player', {
-      videoId: 'NdYWuo9OFAw',
+      videoId: 'sXR93C_bSVk',
       height: 1,
       width: 1,
       playerVars: {
         autoplay: 0,
         loop: 1,
-        playlist: 'NdYWuo9OFAw',
+        playlist: 'sXR93C_bSVk',
         controls: 0,
         disablekb: 1,
         modestbranding: 1,
@@ -99,11 +108,14 @@ document.addEventListener('DOMContentLoaded', function () {
   createPetals();
   initScrollReveal();
 
+  setTimeout(fireConfetti, 800);
+
   var enterBtn = document.getElementById('enterBtn');
   var mainContent = document.getElementById('mainContent');
 
   if (enterBtn && mainContent) {
     enterBtn.addEventListener('click', function () {
+      fireConfetti();
       startMusic();
       mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
