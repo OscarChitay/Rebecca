@@ -10,12 +10,15 @@ html {
 
 body {
   font-family: 'Raleway', sans-serif;
-  background-color: #fef6f9;
+  background-color: #fff8f0;
   background-image:
-    radial-gradient(#f8bbd0 1.2px, transparent 1.2px),
-    radial-gradient(#f8bbd0 1.2px, transparent 1.2px);
-  background-size: 24px 24px;
-  background-position: 0 0, 12px 12px;
+    radial-gradient(circle, #f48fb1 1px, transparent 1px),
+    radial-gradient(circle, #ce93d8 1px, transparent 1px),
+    radial-gradient(circle, #80deea 1px, transparent 1px),
+    radial-gradient(circle, #ffcc80 1px, transparent 1px),
+    radial-gradient(circle, #ef9a9a 1px, transparent 1px);
+  background-size: 32px 32px, 48px 48px, 40px 40px, 56px 56px, 44px 44px;
+  background-position: 0 0, 16px 16px, 8px 32px, 24px 8px, 36px 24px;
   color: #5d2e46;
   overflow-x: hidden;
   min-height: 100vh;
@@ -66,7 +69,7 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 2;
-  background: linear-gradient(145deg, #fce4ec 0%, #f8bbd0 40%, #f48fb1 100%);
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 30%, #ce93d8 60%, #f48fb1 100%);
   text-align: center;
   padding: 2rem;
   overflow: hidden;
@@ -77,8 +80,20 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 25% 50%, rgba(255,255,255,0.35) 0%, transparent 55%),
-    radial-gradient(ellipse at 75% 50%, rgba(255,255,255,0.2) 0%, transparent 55%);
+    radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+  background-size: 18px 18px, 30px 30px;
+  background-position: 0 0, 9px 9px;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(206,147,216,0.25) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -367,7 +382,7 @@ body {
   top: -10px;
   left: 50%;
   transform: translateX(-50%);
-  background: #fef6f9;
+  background: #fff8f0;
   padding: 0 10px;
   color: #f48fb1;
   font-size: 0.9rem;
