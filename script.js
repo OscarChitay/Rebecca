@@ -221,6 +221,7 @@ var slideSystem = {
 
     this.bindEvents();
     this.updateUI();
+    this.animateSlideContent(0);
   },
 
   bindEvents: function () {
@@ -380,15 +381,18 @@ var slideSystem = {
   // Slide 0: "Hola, mi amor."
   animateGreeting: function (slide) {
     var text = slide.querySelector('.slide-text-greeting');
-    var heart = slide.querySelector('.slide-heart');
+    var heart = slide.querySelector('.slide-heart, .slide-heart-img');
+
+    if (!text) return;
 
     gsap.fromTo(text,
-      { opacity: 0, scale: 0.8, y: 20 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: 'back.out(1.4)' }
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'sine.out' }
     );
+    if (!heart) return;
     gsap.fromTo(heart,
-      { opacity: 0, scale: 0 },
-      { opacity: 1, scale: 1, duration: 0.6, delay: 0.4, ease: 'back.out(2)' }
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.6, delay: 0.35, ease: 'sine.out' }
     );
     // Heartbeat after appear
     gsap.to(heart, {
@@ -441,26 +445,26 @@ var slideSystem = {
       { opacity: 0, rotation: -180, scale: 0 },
       { opacity: 1, rotation: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }
     )
-    .fromTo(day,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-      '-=0.2'
-    )
-    .fromTo(month,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-      '-=0.2'
-    )
-    .fromTo(divider,
-      { opacity: 0, scaleX: 0 },
-      { opacity: 1, scaleX: 1, duration: 0.3, ease: 'power2.out' },
-      '-=0.1'
-    )
-    .fromTo(time,
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.5)' },
-      '-=0.1'
-    );
+      .fromTo(day,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+        '-=0.2'
+      )
+      .fromTo(month,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        '-=0.2'
+      )
+      .fromTo(divider,
+        { opacity: 0, scaleX: 0 },
+        { opacity: 1, scaleX: 1, duration: 0.3, ease: 'power2.out' },
+        '-=0.1'
+      )
+      .fromTo(time,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.5)' },
+        '-=0.1'
+      );
   },
 
   // Slide 3: List
@@ -497,21 +501,21 @@ var slideSystem = {
       { opacity: 0, y: -40 },
       { opacity: 1, y: 0, duration: 0.5, ease: 'bounce.out' }
     )
-    .fromTo(title,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-      '-=0.1'
-    )
-    .fromTo(body,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-      '-=0.1'
-    )
-    .fromTo(italic,
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.5)' },
-      '-=0.1'
-    );
+      .fromTo(title,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        '-=0.1'
+      )
+      .fromTo(body,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+        '-=0.1'
+      )
+      .fromTo(italic,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.5)' },
+        '-=0.1'
+      );
   },
 
   // Slide 5: Last thing
@@ -527,14 +531,14 @@ var slideSystem = {
       { opacity: 0, scale: 0 },
       { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }
     )
-    .to(icon, {
-      x: -5, duration: 0.05, yoyo: true, repeat: 5, ease: 'power1.inOut'
-    })
-    .fromTo(title,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-      '-=0.2'
-    );
+      .to(icon, {
+        x: -5, duration: 0.05, yoyo: true, repeat: 5, ease: 'power1.inOut'
+      })
+      .fromTo(title,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        '-=0.2'
+      );
 
     bodies.forEach(function (body) {
       tl.fromTo(body,
@@ -557,16 +561,16 @@ var slideSystem = {
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
     )
-    .fromTo(name,
-      { opacity: 0, scale: 0.5, letterSpacing: '20px' },
-      { opacity: 1, scale: 1, letterSpacing: '6px', duration: 0.8, ease: 'back.out(1.5)' },
-      '-=0.2'
-    )
-    .fromTo(heart,
-      { opacity: 0, scale: 0 },
-      { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' },
-      '-=0.3'
-    );
+      .fromTo(name,
+        { opacity: 0, scale: 0.5, letterSpacing: '20px' },
+        { opacity: 1, scale: 1, letterSpacing: '6px', duration: 0.8, ease: 'back.out(1.5)' },
+        '-=0.2'
+      )
+      .fromTo(heart,
+        { opacity: 0, scale: 0 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' },
+        '-=0.3'
+      );
 
     // Heartbeat
     gsap.to(heart, {
@@ -636,58 +640,52 @@ function initInvitation() {
   if (typeof MotionPath !== 'undefined') gsap.registerPlugin(MotionPath);
 
   gsap.set(flowerWrapper, { opacity: 0 });
-  gsap.set(halo, { opacity: 0, scale: 0.3 });
-  gsap.set(shimmerRings, { opacity: 0, scale: 0.3, strokeDashoffset: 500 });
-  gsap.set(allPetals, { opacity: 0, scale: 0 });
+  gsap.set(halo, { opacity: 0, scale: 0.9 });
+  gsap.set(shimmerRings, { opacity: 0, scale: 0.96, strokeDashoffset: 500 });
+  gsap.set(allPetals, { opacity: 0, scale: 0.96 });
   gsap.set(dewDrops, { opacity: 0 });
-  gsap.set(centerGroup, { opacity: 0, scale: 0 });
-  gsap.set(stamens, { opacity: 0, scale: 0 });
+  gsap.set(centerGroup, { opacity: 0, scale: 0.96 });
+  gsap.set(stamens, { opacity: 0, scale: 0.96 });
   gsap.set(hint, { opacity: 0 });
 
   var tlIntro = gsap.timeline();
 
-  // FASE 1: Flor aparece + Halo crece
-  tlIntro.to(flowerWrapper, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+  // Aparición suave desde el centro: cada capa entra como una sola onda.
+  tlIntro.to(flowerWrapper, { opacity: 1, duration: 0.6, ease: 'sine.out' }, 0);
 
   tlIntro.to(halo, {
     opacity: 0.3,
     scale: 1,
-    duration: 0.8,
-    ease: 'power2.out'
-  }, '-=0.2');
+    duration: 1.2,
+    ease: 'sine.out'
+  }, 0.4);
 
-  // FASE 2: Centro aparece como botón (0.5s)
   tlIntro.to(centerGroup, {
     opacity: 1,
     scale: 1,
-    duration: 0.6,
-    ease: 'back.out(2)'
-  }, '-=0.4');
+    duration: 0.8,
+    ease: 'sine.out'
+  }, 1.0);
 
-  // Estambres aparecen uno por uno
   tlIntro.to(stamens, {
     opacity: 1,
     scale: 1,
-    duration: 0.35,
-    stagger: 0.05,
-    ease: 'back.out(3)'
-  }, '-=0.1');
+    duration: 0.55,
+    ease: 'sine.out'
+  }, 1.25);
 
-  // FASE 3-10: Crecimiento orgánico — capas de adentro hacia afuera
-  // Orden invertido: capa 8 (centro) → capa 1 (exterior)
+  // Las capas aparecen de adentro hacia afuera, con solapamiento y sin rebote.
   var reversedGroups = Array.prototype.slice.call(mandalaGroups).reverse();
-  var layerDurations = [0.4, 0.4, 0.45, 0.45, 0.5, 0.5, 0.55, 0.6];
-  var layerDelays = [0, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15];
+  var layerStartTimes = [1.6, 2.1, 2.6, 3.1, 3.5, 3.9, 4.3, 4.7];
 
-  reversedGroups.forEach(function(group, i) {
+  reversedGroups.forEach(function (group, i) {
     var petalsInGroup = group.querySelectorAll('.petal-mandala');
     tlIntro.to(petalsInGroup, {
       opacity: 1,
       scale: 1,
-      duration: layerDurations[i],
-      stagger: 0.04,
-      ease: 'back.out(1.5)'
-    }, i === 0 ? '-=0.05' : '-=' + layerDelays[i]);
+      duration: 0.7,
+      ease: 'sine.out'
+    }, layerStartTimes[i]);
   });
 
   // FASE 11: Efectos premium
@@ -728,7 +726,7 @@ function initInvitation() {
       ease: 'sine.inOut'
     });
 
-    mandalaGroups.forEach(function(group, i) {
+    mandalaGroups.forEach(function (group, i) {
       var petalsInGroup = group.querySelectorAll('.petal-mandala');
       gsap.to(petalsInGroup, {
         scale: 1.01 + (i * 0.003),
@@ -783,7 +781,7 @@ function initInvitation() {
     }, '-=0.3');
 
     // Pétalos se expanden y desaparecen de afuera hacia adentro
-    mandalaGroups.forEach(function(group, i) {
+    mandalaGroups.forEach(function (group, i) {
       var petalsInGroup = group.querySelectorAll('.petal-mandala');
       tlOpen.to(petalsInGroup, {
         scale: 1.5 + (i * 0.15),
