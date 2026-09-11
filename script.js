@@ -363,7 +363,7 @@ var slideSystem = {
     if (!slide) return;
 
     // Kill any existing animations on this slide (excluir decoraciones de fondo)
-    var animatedElements = slide.querySelectorAll('.slide-content *, .slide-icon-big, .slide-day, .slide-month, .slide-time, .slide-time-divider, .slide-text-greeting, .slide-text-body, .slide-title, .checklist-item, .slide-italic, .slide-text-closing, .slide-name, .slide-final-heart');
+    var animatedElements = slide.querySelectorAll('.slide-content *, .slide-icon-big, .slide-img-icon, .slide-day, .slide-month, .slide-time, .slide-time-divider, .slide-text-greeting, .slide-text-body, .slide-title, .checklist-item, .slide-italic, .slide-text-closing, .slide-name, .slide-final-heart');
     gsap.killTweensOf(animatedElements);
 
     switch (index) {
