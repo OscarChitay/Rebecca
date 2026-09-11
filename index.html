@@ -286,7 +286,7 @@
   <div class="slides-container" id="slidesContainer">
 
     <!-- Barra de progreso -->
-    <div class="progress-bar" id="progressBar">
+    <div class="progress-bar" id="progressBar" role="progressbar" aria-label="Progreso de la invitación" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1">
       <div class="progress-fill" id="progressFill"></div>
     </div>
 
@@ -307,6 +307,7 @@
       <div class="slide-content slide-greeting">
         <p class="slide-text-greeting">Hola, mi amor.</p>
         <img src="images/Invitacion/corazon-removebackgrounds-ai.png" class="slide-img-inline slide-heart-img" alt="">
+        <p class="slide-greeting-subtitle">Tengo una sorpresa preparada para usted.</p>
       </div>
     </div>
 
@@ -320,7 +321,7 @@
       <img src="images/Invitacion/flor blanca.png" class="slide-img-decor slide-img-bl" alt="">
       <img src="images/Invitacion/flor amarilla.png" class="slide-img-decor slide-img-tr" alt="">
       <div class="slide-content slide-opening">
-        <p class="slide-text-body" id="typewriter-text">Tengo algo especial preparado para usted. No le voy a contar mucho porque parte de la magia es dejarse sorprender, solo quiero que ese domingo se levante con ilusión porque nos espera un día diferente y bonito.</p>
+        <p class="slide-text-body" id="typewriter-text">No le voy a contar mucho porque parte de la magia es dejarse sorprender, solo quiero que ese domingo se levante con ilusión porque nos espera un día diferente y bonito.</p>
       </div>
     </div>
 
@@ -440,13 +441,13 @@
 
     <!-- Puntos de navegación -->
     <div class="nav-dots" id="navDots">
-      <span class="dot active"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
+      <button class="dot active" type="button" aria-label="Ir al slide 1"></button>
+      <button class="dot" type="button" aria-label="Ir al slide 2"></button>
+      <button class="dot" type="button" aria-label="Ir al slide 3"></button>
+      <button class="dot" type="button" aria-label="Ir al slide 4"></button>
+      <button class="dot" type="button" aria-label="Ir al slide 5"></button>
+      <button class="dot" type="button" aria-label="Ir al slide 6"></button>
+      <button class="dot" type="button" aria-label="Ir al slide 7"></button>
     </div>
 
     <!-- Flecha de avance -->
@@ -463,8 +464,7 @@
   <img id="lightbox-img" class="lightbox-img" src="" alt="Foto ampliada">
 </div>
 
-<div id="youtube-player" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;overflow:hidden;z-index:-1;" aria-hidden="true"></div>
-<div id="youtube-player-nature" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;overflow:hidden;z-index:-1;" aria-hidden="true"></div>
+<audio id="natureAudio" src="sonido/sonidodefondo.mp3" loop preload="auto"></audio>
 <button id="soundToggle" class="sound-toggle" type="button" aria-label="Activar sonido" title="Activar sonido">
   <i data-lucide="volume-2" class="sound-toggle-icon"></i>
 </button>
@@ -475,6 +475,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPath.min.js"></script>
 <script src="script.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>

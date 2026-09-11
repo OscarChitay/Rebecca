@@ -57,41 +57,28 @@ function createFloatingPetals() {
 }
 
 /* ─── SONIDOS NATURALES (YouTube Player) ─── */
-var naturePlayer = null;
+var natureAudio = null;
 var natureStarted = false;
 var natureStartCheck = null;
 
 function startNatureSounds(force) {
   if (natureStarted && !force) return;
-
-  function tryStartNature() {
-    if (!naturePlayer || typeof naturePlayer.unMute !== 'function') return false;
-    naturePlayer.unMute();
-    naturePlayer.playVideo();
-    natureStarted = true;
-    return true;
+  natureAudio = natureAudio || document.getElementById('natureAudio');
+  if (!natureAudio) return;
+  natureAudio.loop = true;
+  natureAudio.volume = 0.3;
+  var playback = natureAudio.play();
+  if (playback && typeof playback.catch === 'function') {
+    playback.catch(function () { natureStarted = false; });
   }
-
-  if (tryStartNature()) return;
-  if (natureStartCheck) clearInterval(natureStartCheck);
-  natureStartCheck = setInterval(function () {
-    if (tryStartNature()) {
-      clearInterval(natureStartCheck);
-      natureStartCheck = null;
-    }
-  }, 300);
-  setTimeout(function () {
-    if (natureStartCheck) {
-      clearInterval(natureStartCheck);
-      natureStartCheck = null;
-    }
-  }, 30000);
+  natureStarted = true;
 }
 
 /* ─── PRIMERA INTERACCIÓN (unmute audio) ─── */
 function activateAudio() {
   startNatureSounds(true);
   startMusic();
+  try { localStorage.setItem('rebecca-audio-enabled', '1'); } catch (error) { }
   var soundButton = document.getElementById('soundToggle');
   if (soundButton) {
     soundButton.classList.add('is-on');
@@ -100,9 +87,25 @@ function activateAudio() {
   }
 }
 
+function deactivateAudio() {
+  natureAudio = natureAudio || document.getElementById('natureAudio');
+  if (natureAudio) natureAudio.pause();
+  natureStarted = false;
+  musicStarted = false;
+  try { localStorage.setItem('rebecca-audio-enabled', '0'); } catch (error) { }
+  var soundButton = document.getElementById('soundToggle');
+  if (soundButton) {
+    soundButton.classList.remove('is-on');
+    soundButton.setAttribute('aria-label', 'Activar sonido');
+    soundButton.setAttribute('title', 'Activar sonido');
+  }
+}
+
 function initFirstInteraction() {
   function onFirstInteraction() {
-    activateAudio();
+    var audioDisabled = false;
+    try { audioDisabled = localStorage.getItem('rebecca-audio-enabled') === '0'; } catch (error) { }
+    if (!audioDisabled) activateAudio();
     document.removeEventListener('click', onFirstInteraction);
     document.removeEventListener('touchstart', onFirstInteraction);
   }
@@ -113,7 +116,8 @@ function initFirstInteraction() {
   if (soundButton) {
     soundButton.addEventListener('click', function (event) {
       event.stopPropagation();
-      activateAudio();
+      if (soundButton.classList.contains('is-on')) deactivateAudio();
+      else activateAudio();
     });
   }
 }
@@ -130,50 +134,12 @@ function initScrollReveal() {
 }
 
 /* ─── MÚSICA ─── */
-var player = null;
 var musicStarted = false;
-
-function onYouTubeIframeAPIReady() {
-  try {
-    // Player de música: "Contigo" - Los Panchos
-    player = new YT.Player('youtube-player', {
-      videoId: 'F1COh7t3el4', height: 1, width: 1,
-      playerVars: { autoplay: 0, loop: 1, playlist: 'F1COh7t3el4', controls: 0, disablekb: 1, modestbranding: 1, rel: 0, fs: 0, iv_load_policy: 3, cc_load_policy: 0 },
-      events: {
-        onReady: function (e) { e.target.setVolume(50); e.target.mute(); e.target.playVideo(); },
-        onError: function (e) { console.log('YouTube music error:', e.data); }
-      }
-    });
-
-    // Player de naturaleza: Río + pájaros
-    naturePlayer = new YT.Player('youtube-player-nature', {
-      videoId: 'PwSHOI7DwWM', height: 1, width: 1,
-      playerVars: { autoplay: 1, loop: 1, playlist: 'PwSHOI7DwWM', controls: 0, disablekb: 1, modestbranding: 1, rel: 0, fs: 0, iv_load_policy: 3, cc_load_policy: 0 },
-      events: {
-        onReady: function (e) { e.target.setVolume(30); e.target.mute(); e.target.playVideo(); startNatureSounds(); },
-        onError: function (e) { console.log('YouTube nature error:', e.data); }
-      }
-    });
-  } catch (err) { console.log('YouTube player error:', err); }
-}
 
 function startMusic() {
   if (musicStarted) return;
-  if (player && typeof player.unMute === 'function') {
-    player.unMute();
-    player.playVideo();
-    musicStarted = true;
-  } else {
-    var check = setInterval(function () {
-      if (player && typeof player.unMute === 'function') {
-        player.unMute();
-        player.playVideo();
-        musicStarted = true;
-        clearInterval(check);
-      }
-    }, 300);
-    setTimeout(function () { clearInterval(check); }, 10000);
-  }
+  startNatureSounds(true);
+  musicStarted = true;
 }
 
 /* ─── LIGHTBOX ─── */
@@ -262,7 +228,7 @@ var slideSystem = {
     this.slides[0].classList.add('active');
     this.slides[0].style.visibility = 'visible';
     this.slides[0].style.opacity = '1';
-    this.slides[0].style.transform = 'translateX(0)';
+    this.slides[0].style.transform = 'translateY(0) scale(1)';
 
     this.bindEvents();
     this.updateUI();
@@ -275,10 +241,23 @@ var slideSystem = {
     // Tap to advance
     this.container.addEventListener('click', function (e) {
       if (self.isAnimating) return;
-      // Don't advance if clicking on interactive elements
-      if (e.target.closest('.nav-dots')) return;
-      self.nextSlide();
+      var dot = e.target.closest('.dot');
+      if (dot) {
+        self.goToSlide(Array.prototype.indexOf.call(self.dots, dot));
+        return;
+      }
+      if (e.target.closest('.nav-dots, .slide-arrow, .sound-toggle')) return;
+      var bounds = self.container.getBoundingClientRect();
+      if (e.clientX < bounds.left + bounds.width / 2) self.prevSlide();
+      else self.nextSlide();
     });
+
+    if (this.arrow) {
+      this.arrow.addEventListener('click', function (e) {
+        e.stopPropagation();
+        self.nextSlide();
+      });
+    }
 
     // Swipe support
     var touchStartX = 0;
@@ -341,15 +320,17 @@ var slideSystem = {
     var oldSlide = this.slides[oldIndex];
     var newSlide = this.slides[index];
 
-    // Exit old slide with ripple effect
+    // Crossfade real: el slide anterior permanece visible mientras entra el nuevo.
     oldSlide.classList.remove('active');
-    oldSlide.classList.add('ripple-exit');
-    oldSlide.style.transform = direction > 0 ? 'translateX(-100%)' : 'translateX(100%)';
-    oldSlide.style.opacity = '0';
+    oldSlide.style.zIndex = '1';
+    oldSlide.style.transform = direction > 0 ? 'translateY(-3px) scale(0.998)' : 'translateY(3px) scale(0.998)';
+    oldSlide.style.opacity = '1';
 
     // Prepare new slide entry
-    newSlide.style.transform = direction > 0 ? 'translateX(100%)' : 'translateX(-100%)';
-    newSlide.style.opacity = '0';
+    newSlide.style.zIndex = '2';
+    newSlide.style.transform = direction > 0 ? 'translateY(3px) scale(0.998)' : 'translateY(-3px) scale(0.998)';
+    // El fondo del nuevo slide queda presente de inmediato para no revelar los pétalos.
+    newSlide.style.opacity = '1';
     newSlide.style.visibility = 'visible';
 
     // Force reflow
@@ -357,8 +338,8 @@ var slideSystem = {
 
     // Animate new slide in
     newSlide.classList.add('active');
-    newSlide.style.transform = 'translateX(0)';
-    newSlide.style.opacity = '1';
+    newSlide.style.transform = 'translateY(0) scale(1)';
+    oldSlide.style.opacity = '0';
 
     this.currentSlide = index;
     this.updateUI();
@@ -376,8 +357,10 @@ var slideSystem = {
       oldSlide.style.transform = '';
       oldSlide.style.opacity = '';
       oldSlide.style.filter = '';
+      oldSlide.style.zIndex = '';
+      newSlide.style.zIndex = '';
       self.isAnimating = false;
-    }, 650);
+    }, 1050);
   },
 
   updateUI: function () {
@@ -386,10 +369,13 @@ var slideSystem = {
     if (this.progressFill) {
       this.progressFill.style.width = progress + '%';
     }
+    var progressBar = document.getElementById('progressBar');
+    if (progressBar) progressBar.setAttribute('aria-valuenow', this.currentSlide + 1);
 
     // Update dots
     this.dots.forEach(function (dot, i) {
       dot.classList.toggle('active', i === this.currentSlide);
+      dot.setAttribute('aria-current', i === this.currentSlide ? 'step' : 'false');
     }.bind(this));
 
     // Update arrow visibility
@@ -409,7 +395,7 @@ var slideSystem = {
     if (!slide) return;
 
     // Kill any existing animations on this slide (excluir decoraciones de fondo)
-    var animatedElements = slide.querySelectorAll('.slide-content *, .slide-icon-big, .slide-img-icon, .slide-day, .slide-month, .slide-time, .slide-time-divider, .slide-text-greeting, .slide-text-body, .slide-title, .checklist-item, .slide-italic, .slide-text-closing, .slide-name, .slide-final-heart');
+    var animatedElements = slide.querySelectorAll('.slide-content *, .slide-icon-big, .slide-img-icon, .slide-day, .slide-month, .slide-time, .slide-time-divider, .slide-text-greeting, .slide-greeting-subtitle, .slide-text-body, .slide-title, .checklist-item, .slide-italic, .slide-text-closing, .slide-name, .slide-final-heart');
     gsap.killTweensOf(animatedElements);
 
     switch (index) {
@@ -427,22 +413,29 @@ var slideSystem = {
   animateGreeting: function (slide) {
     var text = slide.querySelector('.slide-text-greeting');
     var heart = slide.querySelector('.slide-heart, .slide-heart-img');
+    var subtitle = slide.querySelector('.slide-greeting-subtitle');
 
     if (!text) return;
 
     gsap.fromTo(text,
-      { opacity: 0, y: 16 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'sine.out' }
+      { opacity: 0 },
+      { opacity: 1, duration: 1.4, ease: 'sine.out' }
     );
     if (!heart) return;
     gsap.fromTo(heart,
       { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.6, delay: 0.35, ease: 'sine.out' }
+      { opacity: 1, y: 0, duration: 0.9, delay: 0.65, ease: 'sine.out' }
     );
     // Heartbeat after appear
     gsap.to(heart, {
-      scale: 1.15, duration: 0.3, delay: 1.2, yoyo: true, repeat: -1, ease: 'sine.inOut'
+      scale: 1.15, duration: 0.45, delay: 2.3, yoyo: true, repeat: -1, ease: 'sine.inOut'
     });
+    if (subtitle) {
+      gsap.fromTo(subtitle,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.9, delay: 1.35, ease: 'sine.out' }
+      );
+    }
   },
 
   // Slide 1: Typewriter
@@ -450,7 +443,7 @@ var slideSystem = {
     var text = slide.querySelector('.slide-text-body');
     if (!text) return;
 
-    // Guardar texto original solo la primera vez
+    // Typewriter delicado: el texto aparece progresivamente, como antes.
     if (!text.dataset.original) {
       text.dataset.original = text.textContent;
     }
@@ -466,14 +459,13 @@ var slideSystem = {
       if (i < chars.length) {
         text.textContent += chars[i];
         i++;
-        setTimeout(typeChar, 25 + Math.random() * 15);
+        setTimeout(typeChar, 28 + Math.random() * 12);
       } else {
         self.isAnimating = false;
       }
     }
 
-    // Small delay before starting
-    setTimeout(typeChar, 400);
+    setTimeout(typeChar, 180);
   },
 
   // Slide 2: Date
@@ -487,28 +479,28 @@ var slideSystem = {
     var tl = gsap.timeline();
 
     tl.fromTo(icon,
-      { opacity: 0, rotation: -180, scale: 0 },
-      { opacity: 1, rotation: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }
+      { opacity: 0 },
+      { opacity: 1, duration: 1, ease: 'sine.out' }
     )
       .fromTo(day,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-        '-=0.2'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: 'sine.out' },
+        '+=0.1'
       )
       .fromTo(month,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-        '-=0.2'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.7, ease: 'sine.out' },
+        '+=0.05'
       )
       .fromTo(divider,
-        { opacity: 0, scaleX: 0 },
-        { opacity: 1, scaleX: 1, duration: 0.3, ease: 'power2.out' },
-        '-=0.1'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, ease: 'sine.out' },
+        '+=0.05'
       )
       .fromTo(time,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.5)' },
-        '-=0.1'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.7, ease: 'sine.out' },
+        '+=0.05'
       );
   },
 
@@ -520,15 +512,15 @@ var slideSystem = {
     var tl = gsap.timeline();
 
     tl.fromTo(title,
-      { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+      { opacity: 0 },
+      { opacity: 1, duration: 0.8, ease: 'sine.out' }
     );
 
     items.forEach(function (item, i) {
       tl.fromTo(item,
-        { opacity: 0, x: -30 },
-        { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out' },
-        '-=0.1'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.65, ease: 'sine.out' },
+        i === 0 ? '+=0.15' : '+=0.12'
       );
     });
   },
@@ -543,23 +535,23 @@ var slideSystem = {
     var tl = gsap.timeline();
 
     tl.fromTo(icon,
-      { opacity: 0, y: -40 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'bounce.out' }
+      { opacity: 0 },
+      { opacity: 1, duration: 0.9, ease: 'sine.out' }
     )
       .fromTo(title,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-        '-=0.1'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: 'sine.out' },
+        '+=0.1'
       )
       .fromTo(body,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-        '-=0.1'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.9, ease: 'sine.out' },
+        '+=0.1'
       )
       .fromTo(italic,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.5)' },
-        '-=0.1'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: 'sine.out' },
+        '+=0.1'
       );
   },
 
@@ -573,23 +565,23 @@ var slideSystem = {
 
     // Shake animation for lock
     tl.fromTo(icon,
-      { opacity: 0, scale: 0 },
-      { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }
+      { opacity: 0 },
+      { opacity: 1, duration: 0.9, ease: 'sine.out' }
     )
       .to(icon, {
-        x: -5, duration: 0.05, yoyo: true, repeat: 5, ease: 'power1.inOut'
+        x: -2, duration: 0.12, yoyo: true, repeat: 3, ease: 'sine.inOut'
       })
       .fromTo(title,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-        '-=0.2'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: 'sine.out' },
+        '+=0.1'
       );
 
     bodies.forEach(function (body) {
       tl.fromTo(body,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-        '-=0.1'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.85, ease: 'sine.out' },
+        '+=0.12'
       );
     });
   },
@@ -603,23 +595,23 @@ var slideSystem = {
     var tl = gsap.timeline();
 
     tl.fromTo(closing,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      { opacity: 0 },
+      { opacity: 1, duration: 0.9, ease: 'sine.out' }
     )
       .fromTo(name,
-        { opacity: 0, scale: 0.5, letterSpacing: '20px' },
-        { opacity: 1, scale: 1, letterSpacing: '6px', duration: 0.8, ease: 'back.out(1.5)' },
+        { opacity: 0 },
+        { opacity: 1, duration: 1, ease: 'sine.out' },
         '-=0.2'
       )
       .fromTo(heart,
-        { opacity: 0, scale: 0 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' },
-        '-=0.3'
+        { opacity: 0 },
+        { opacity: 1, duration: 0.9, ease: 'sine.out' },
+        '+=0.12'
       );
 
     // Heartbeat
     gsap.to(heart, {
-      scale: 1.2, duration: 0.3, delay: 1.5, yoyo: true, repeat: -1, ease: 'sine.inOut'
+      scale: 1.2, duration: 0.45, delay: 2.5, yoyo: true, repeat: -1, ease: 'sine.inOut'
     });
 
     // Golden burst on last slide (reemplaza confeti)
