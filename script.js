@@ -623,8 +623,6 @@ function initInvitation() {
   if (!flowerWrapper || !slidesContainer || typeof gsap === 'undefined') return;
 
   var hint = flowerWrapper.querySelector('.flower-hint');
-  var stem = flowerWrapper.querySelector('.flower-stem');
-  var leaves = flowerWrapper.querySelectorAll('.leaf');
   var halo = flowerWrapper.querySelector('.flower-halo');
   var shimmerRings = flowerWrapper.querySelectorAll('.shimmer-ring');
   var mandalaGroups = flowerWrapper.querySelectorAll('.petal-group-mandala');
@@ -634,102 +632,73 @@ function initInvitation() {
   var stamens = flowerWrapper.querySelectorAll('.stamen');
   var particlesContainer = document.getElementById('flowerParticles');
 
-  // Register plugins
   if (typeof SplitText !== 'undefined') gsap.registerPlugin(SplitText);
   if (typeof MotionPath !== 'undefined') gsap.registerPlugin(MotionPath);
 
-  // Initial state
   gsap.set(flowerWrapper, { opacity: 0 });
-  gsap.set(stem, { strokeDashoffset: 280 });
-  gsap.set(leaves, { opacity: 0, scale: 0 });
-  gsap.set(halo, { opacity: 0, scale: 0.8 });
-  gsap.set(shimmerRings, { opacity: 0, scale: 0.5, strokeDashoffset: 500 });
+  gsap.set(halo, { opacity: 0, scale: 0.3 });
+  gsap.set(shimmerRings, { opacity: 0, scale: 0.3, strokeDashoffset: 500 });
   gsap.set(allPetals, { opacity: 0, scale: 0 });
   gsap.set(dewDrops, { opacity: 0 });
   gsap.set(centerGroup, { opacity: 0, scale: 0 });
   gsap.set(stamens, { opacity: 0, scale: 0 });
   gsap.set(hint, { opacity: 0 });
 
-  // ═══════════════════════════════════════════
-  // FASE 1: APARICIÓN (0 - 0.8s)
-  // ═══════════════════════════════════════════
   var tlIntro = gsap.timeline();
 
-  // Flor completa aparece
-  tlIntro.to(flowerWrapper, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+  // FASE 1: Flor aparece + Halo crece
+  tlIntro.to(flowerWrapper, { opacity: 1, duration: 0.4, ease: 'power2.out' });
 
-  // Tallo crece desde abajo
-  tlIntro.to(stem, {
-    strokeDashoffset: 0,
-    duration: 0.7,
-    ease: 'power2.out'
-  }, '-=0.1');
-
-  // Hojas se despliegan
-  tlIntro.to(leaves, {
-    opacity: 1,
-    scale: 1,
-    duration: 0.5,
-    stagger: 0.15,
-    ease: 'back.out(1.8)'
-  }, '-=0.3');
-
-  // ═══════════════════════════════════════════
-  // FASE 2: CENTRO (0.6 - 1.2s)
-  // ═══════════════════════════════════════════
   tlIntro.to(halo, {
-    opacity: 0.5,
+    opacity: 0.3,
     scale: 1,
-    duration: 0.6,
+    duration: 0.8,
     ease: 'power2.out'
   }, '-=0.2');
 
+  // FASE 2: Centro aparece como botón (0.5s)
   tlIntro.to(centerGroup, {
     opacity: 1,
     scale: 1,
-    duration: 0.5,
-    ease: 'back.out(2.5)'
-  }, '-=0.3');
+    duration: 0.6,
+    ease: 'back.out(2)'
+  }, '-=0.4');
 
-  // Estambres aparecen
+  // Estambres aparecen uno por uno
   tlIntro.to(stamens, {
     opacity: 1,
     scale: 1,
-    duration: 0.3,
-    stagger: 0.04,
+    duration: 0.35,
+    stagger: 0.05,
     ease: 'back.out(3)'
   }, '-=0.1');
 
-  // ═══════════════════════════════════════════
-  // FASE 3-10: MANDALA PÉTALOS (1.0 - 3.0s)
-  // 8 capas, cada una aparece con stagger
-  // ═══════════════════════════════════════════
-  var mandalaDelays = [0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.08, 0.08];
-  var mandalaDurations = [0.6, 0.5, 0.5, 0.45, 0.4, 0.35, 0.3, 0.25];
-  var mandalaEases = ['back.out(1.2)', 'back.out(1.4)', 'back.out(1.6)', 'back.out(1.8)', 'back.out(2)', 'back.out(2.2)', 'back.out(2.5)', 'back.out(3)'];
+  // FASE 3-10: Crecimiento orgánico — capas de adentro hacia afuera
+  // Orden invertido: capa 8 (centro) → capa 1 (exterior)
+  var reversedGroups = Array.prototype.slice.call(mandalaGroups).reverse();
+  var layerDurations = [0.4, 0.4, 0.45, 0.45, 0.5, 0.5, 0.55, 0.6];
+  var layerDelays = [0, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15];
 
-  mandalaGroups.forEach(function(group, i) {
+  reversedGroups.forEach(function(group, i) {
     var petalsInGroup = group.querySelectorAll('.petal-mandala');
     tlIntro.to(petalsInGroup, {
       opacity: 1,
       scale: 1,
-      duration: mandalaDurations[i],
+      duration: layerDurations[i],
       stagger: 0.04,
-      ease: mandalaEases[i]
-    }, i === 0 ? '-=0.1' : '-=' + mandalaDelays[i]);
+      ease: 'back.out(1.5)'
+    }, i === 0 ? '-=0.05' : '-=' + layerDelays[i]);
   });
 
-  // ═══════════════════════════════════════════
-  // FASE 11: EFECTOS PREMIUM (2.8 - 3.5s)
-  // ═══════════════════════════════════════════
+  // FASE 11: Efectos premium
   tlIntro.to(shimmerRings, {
     opacity: 0.5,
     scale: 1,
     strokeDashoffset: 0,
     duration: 0.8,
-    stagger: 0.1,
+    stagger: 0.12,
     ease: 'power2.out'
-  }, '-=0.3');
+  }, '-=0.2');
 
   tlIntro.to(dewDrops, {
     opacity: 1,
@@ -740,7 +709,7 @@ function initInvitation() {
   tlIntro.add(function () {
     createFlowerParticles(10, 'gold');
     createFlowerParticles(6, 'pink');
-  }, '-=0.4');
+  }, '-=0.3');
 
   tlIntro.to(hint, {
     opacity: 1,
@@ -748,9 +717,7 @@ function initInvitation() {
     ease: 'power2.out'
   }, '-=0.1');
 
-  // ═══════════════════════════════════════════
   // FASE 12: BREATHING LOOP
-  // ═══════════════════════════════════════════
   tlIntro.add(function () {
     gsap.to(halo, {
       scale: 1.05,
@@ -761,7 +728,6 @@ function initInvitation() {
       ease: 'sine.inOut'
     });
 
-    // Cada capa del mandala respira con ritmo diferente
     mandalaGroups.forEach(function(group, i) {
       var petalsInGroup = group.querySelectorAll('.petal-mandala');
       gsap.to(petalsInGroup, {
@@ -816,7 +782,7 @@ function initInvitation() {
       createFlowerParticles(5, 'white');
     }, '-=0.3');
 
-    // Todas las capas mandala se expanden y desaparecen
+    // Pétalos se expanden y desaparecen de afuera hacia adentro
     mandalaGroups.forEach(function(group, i) {
       var petalsInGroup = group.querySelectorAll('.petal-mandala');
       tlOpen.to(petalsInGroup, {
@@ -849,20 +815,6 @@ function initInvitation() {
       ease: 'power2.in'
     }, '-=0.3');
 
-    tlOpen.to(stem, {
-      opacity: 0,
-      y: -20,
-      duration: 0.4,
-      ease: 'power2.in'
-    }, '-=0.4');
-
-    tlOpen.to(leaves, {
-      opacity: 0,
-      scale: 0.5,
-      duration: 0.3,
-      ease: 'power2.in'
-    }, '-=0.3');
-
     tlOpen.to(dewDrops, {
       opacity: 0,
       duration: 0.2,
@@ -881,121 +833,11 @@ function initInvitation() {
       if (typeof slideSystem !== 'undefined') slideSystem.init();
     });
 
-    // Más partículas
     tlOpen.add(function () {
       createFlowerParticles(15, 'gold');
       createFlowerParticles(10, 'pink');
       createFlowerParticles(5, 'white');
     }, '-=0.3');
-
-    // Pétalos core se expanden
-    tlOpen.to(petalCore, {
-      scale: 2,
-      opacity: 0,
-      duration: 0.4,
-      stagger: 0.03,
-      ease: 'power2.out'
-    }, '-=0.2');
-
-    // Pétalos internos se expanden
-    tlOpen.to(petalInner, {
-      scale: 1.8,
-      opacity: 0,
-      duration: 0.5,
-      stagger: 0.04,
-      ease: 'power2.out'
-    }, '-=0.3');
-
-    // Pétalos medios se expanden
-    tlOpen.to(petalMid, {
-      scale: 2,
-      opacity: 0,
-      duration: 0.5,
-      stagger: 0.04,
-      ease: 'power2.out'
-    }, '-=0.3');
-
-    // Pétalos externos se expanden
-    tlOpen.to(petalOuter, {
-      scale: 2.2,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.05,
-      ease: 'power2.out'
-    }, '-=0.3');
-
-    // Pétalos extra-externos se expanden
-    tlOpen.to(petalExtraOuter, {
-      scale: 2.5,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.05,
-      ease: 'power2.out'
-    }, '-=0.4');
-
-    // Centro crece y desaparece
-    tlOpen.to(centerGroup, {
-      scale: 2.5,
-      opacity: 0,
-      duration: 0.4,
-      ease: 'power2.in'
-    }, '-=0.3');
-
-    // Halo se expande
-    tlOpen.to(halo, {
-      scale: 2.5,
-      opacity: 0,
-      duration: 0.5,
-      ease: 'power2.in'
-    }, '-=0.2');
-
-    // Shimmer rings se expanden y desaparecen
-    tlOpen.to(shimmerRings, {
-      scale: 3,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power2.in'
-    }, '-=0.3');
-
-    // Tallo se desvanece
-    tlOpen.to(stem, {
-      opacity: 0,
-      y: -20,
-      duration: 0.4,
-      ease: 'power2.in'
-    }, '-=0.4');
-
-    // Hojas desaparecen
-    tlOpen.to(leaves, {
-      opacity: 0,
-      scale: 0.5,
-      duration: 0.3,
-      ease: 'power2.in'
-    }, '-=0.3');
-
-    // Gotas de rocío desaparecen
-    tlOpen.to(dewDrops, {
-      opacity: 0,
-      duration: 0.2,
-      ease: 'power2.in'
-    }, '-=0.3');
-
-    // Flor completa se desvanece
-    tlOpen.to(flowerWrapper, {
-      opacity: 0,
-      duration: 0.3,
-      ease: 'power2.in'
-    }, '-=0.1');
-
-    // Mostrar slides
-    tlOpen.add(function () {
-      slidesContainer.classList.add('active');
-      slideSystem.init();
-      startMusic();
-      setTimeout(function () {
-        slideSystem.animateSlideContent(0);
-      }, 300);
-    });
   });
 }
 
