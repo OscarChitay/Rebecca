@@ -89,15 +89,33 @@ function startNatureSounds(force) {
 }
 
 /* ─── PRIMERA INTERACCIÓN (unmute audio) ─── */
+function activateAudio() {
+  startNatureSounds(true);
+  startMusic();
+  var soundButton = document.getElementById('soundToggle');
+  if (soundButton) {
+    soundButton.classList.add('is-on');
+    soundButton.setAttribute('aria-label', 'Sonido activado');
+    soundButton.setAttribute('title', 'Sonido activado');
+  }
+}
+
 function initFirstInteraction() {
   function onFirstInteraction() {
-    startNatureSounds(true);
-    startMusic();
+    activateAudio();
     document.removeEventListener('click', onFirstInteraction);
     document.removeEventListener('touchstart', onFirstInteraction);
   }
   document.addEventListener('click', onFirstInteraction);
   document.addEventListener('touchstart', onFirstInteraction);
+
+  var soundButton = document.getElementById('soundToggle');
+  if (soundButton) {
+    soundButton.addEventListener('click', function (event) {
+      event.stopPropagation();
+      activateAudio();
+    });
+  }
 }
 
 /* ─── SCROLL REVEAL ─── */
