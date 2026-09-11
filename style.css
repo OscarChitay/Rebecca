@@ -35,6 +35,7 @@ body {
   height: 20px;
   opacity: 0;
   animation: fallLeaf linear infinite;
+  will-change: transform, opacity;
 }
 
 .leaf::before {
@@ -82,6 +83,7 @@ body {
   border-radius: 50%;
   opacity: 0;
   animation: bokehPulse ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 @keyframes bokehPulse {
@@ -99,6 +101,7 @@ body {
   opacity: 0;
   animation: floatPetal linear infinite;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 @keyframes floatPetal {
@@ -123,7 +126,7 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 2;
-  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 30%, #ce93d8 60%, #f48fb1 100%);
+  background: linear-gradient(160deg, #FAF4EC 0%, #E8F5E9 40%, #F1F8E9 70%, #FAF4EC 100%);
   text-align: center;
   padding: 2rem;
   overflow: hidden;
@@ -134,10 +137,10 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px),
-    radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
-  background-size: 18px 18px, 30px 30px;
-  background-position: 0 0, 9px 9px;
+    radial-gradient(circle, rgba(143,168,136,0.08) 1px, transparent 1px),
+    radial-gradient(circle, rgba(201,169,110,0.06) 1px, transparent 1px);
+  background-size: 24px 24px, 40px 40px;
+  background-position: 0 0, 12px 12px;
   pointer-events: none;
 }
 
@@ -149,7 +152,7 @@ body {
 .hero-small {
   font-family: 'Great Vibes', cursive;
   font-size: 1.2rem;
-  color: #c2185b;
+  color: #D4A0A4;
   margin-bottom: 0.5rem;
   opacity: 0;
   animation: fadeInDown 1s ease 0.5s forwards;
@@ -159,7 +162,7 @@ body {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2.2rem;
   font-weight: 700;
-  color: #880e4f;
+  color: #3D5A3D;
   line-height: 1.3;
   opacity: 0;
   animation: fadeInDown 1s ease 0.8s forwards;
@@ -169,7 +172,7 @@ body {
   display: block;
   font-size: 3.2rem;
   font-weight: 700;
-  color: #c2185b;
+  color: #D4A0A4;
   text-shadow: 2px 2px 6px rgba(255,255,255,0.5);
   margin-top: 0.2rem;
 }
@@ -179,7 +182,7 @@ body {
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 6px;
-  color: #880e4f;
+  color: #5A7A5A;
   margin-top: 0.5rem;
   opacity: 0;
   animation: fadeInDown 1s ease 1s forwards;
@@ -194,7 +197,7 @@ body {
 
 .hero-btn {
   display: inline-block;
-  background: #c2185b;
+  background: #8FA888;
   color: #fff;
   border: none;
   padding: 1rem 2.8rem;
@@ -204,16 +207,16 @@ body {
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 18px rgba(194, 24, 91, 0.4);
+  box-shadow: 0 4px 18px rgba(143, 168, 136, 0.4);
   opacity: 0;
   animation: fadeInUp 1s ease 1.5s forwards;
   letter-spacing: 1.5px;
 }
 
 .hero-btn:hover {
-  background: #e91e63;
+  background: #7A9A7A;
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(194, 24, 91, 0.5);
+  box-shadow: 0 8px 25px rgba(143, 168, 136, 0.5);
 }
 
 .scroll-hint {
@@ -221,7 +224,7 @@ body {
   bottom: 2rem;
   font-family: 'Great Vibes', cursive;
   font-size: 1.1rem;
-  color: #c2185b;
+  color: #8FA888;
   opacity: 0;
   animation: fadeIn 1s ease 2.8s forwards, bounce 2.5s ease-in-out infinite;
   z-index: 2;
@@ -241,7 +244,7 @@ body {
 .polaroid {
   background: #fff;
   padding: 10px 10px 45px 10px;
-  box-shadow: 0 8px 30px rgba(194, 24, 91, 0.1), 0 2px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 30px rgba(143, 168, 136, 0.1), 0 2px 10px rgba(0, 0, 0, 0.06);
   border-radius: 4px;
   transform: rotate(var(--rot, 0deg));
   width: 100%;
@@ -271,7 +274,7 @@ body {
 .text-gracia {
   font-family: 'Great Vibes', cursive;
   font-size: 2rem;
-  color: #c2185b;
+  color: #D4A0A4;
   text-align: center;
   margin: 1.8rem 0;
 }
@@ -385,6 +388,8 @@ body {
   gap: 1.5rem;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .flower-svg {
@@ -451,6 +456,8 @@ body {
   transform: translateX(100%);
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   background: linear-gradient(160deg, #FAF4EC 0%, #E8F5E9 40%, #F1F8E9 70%, #FAF4EC 100%);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* ─── SLIDE BACKGROUNDS NATURALES ─── */
@@ -481,11 +488,16 @@ body {
   z-index: 1;
 }
 
+.slide.ripple-exit {
+  filter: url(#water-ripple);
+}
+
 .slide.exit-left {
   opacity: 0;
   visibility: visible;
   transform: translateX(-100%);
   z-index: 0;
+  filter: none;
 }
 
 .slide-content {
@@ -727,6 +739,8 @@ body {
   display: flex;
   gap: 10px;
   z-index: 30;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .dot {
@@ -785,10 +799,6 @@ body {
   top: -1px;
 }
 
-.letter-list li .icon-sm {
-  margin-right: 4px;
-}
-
 /* ─── BOTANICAL DECORATIONS ─── */
 .slide-bg-decor {
   position: absolute;
@@ -801,12 +811,25 @@ body {
   position: absolute;
   width: 100px;
   height: 100px;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-.leaf-tl { top: 0; left: 0; }
-.leaf-tr { top: 0; right: 0; }
-.leaf-bl { bottom: 0; left: 0; }
-.leaf-br { bottom: 0; right: 0; }
+.slide.active .leaf-corner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.slide.active .leaf-tl { transition-delay: 0.2s; }
+.slide.active .leaf-tr { transition-delay: 0.35s; }
+.slide.active .leaf-bl { transition-delay: 0.5s; }
+.slide.active .leaf-br { transition-delay: 0.65s; }
+
+.leaf-tl { top: 0; left: 0; transform-origin: top left; }
+.leaf-tr { top: 0; right: 0; transform-origin: top right; }
+.leaf-bl { bottom: 0; left: 0; transform-origin: bottom left; }
+.leaf-br { bottom: 0; right: 0; transform-origin: bottom right; }
 
 /* ─── GOLDEN GLOW (slide final) ─── */
 .slide-signature::after {
@@ -828,9 +851,55 @@ body {
   50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
 }
 
-/* ─── FLOATING HEARTS ─── */
-.floating-heart {
-  will-change: transform, opacity;
+/* ─── LIGHTBOX ─── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-img {
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.lightbox.active .lightbox-img {
+  transform: scale(1);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2.5rem;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
 }
 
 /* ─── RESPONSIVE ─── */

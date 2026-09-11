@@ -47,22 +47,37 @@ function createFloatingPetals() {
   }
 }
 
-/* ─── SONIDOS NATURALES ─── */
-var natureAudioStarted = false;
+/* ─── SONIDOS NATURALES (YouTube Player) ─── */
+var naturePlayer = null;
+var natureStarted = false;
 
 function startNatureSounds() {
-  if (natureAudioStarted) return;
-  var natureAudio = document.getElementById('natureAudio');
-  var waterAudio = document.getElementById('waterAudio');
-  if (natureAudio) {
-    natureAudio.volume = 0.15;
-    natureAudio.play().catch(function() {});
+  if (natureStarted) return;
+  if (naturePlayer && typeof naturePlayer.unMute === 'function') {
+    naturePlayer.unMute();
+    natureStarted = true;
+  } else {
+    var check = setInterval(function () {
+      if (naturePlayer && typeof naturePlayer.unMute === 'function') {
+        naturePlayer.unMute();
+        natureStarted = true;
+        clearInterval(check);
+      }
+    }, 300);
+    setTimeout(function () { clearInterval(check); }, 10000);
   }
-  if (waterAudio) {
-    waterAudio.volume = 0.1;
-    waterAudio.play().catch(function() {});
+}
+
+/* ─── PRIMERA INTERACCIÓN (unmute audio) ─── */
+function initFirstInteraction() {
+  function onFirstInteraction() {
+    startNatureSounds();
+    startMusic();
+    document.removeEventListener('click', onFirstInteraction);
+    document.removeEventListener('touchstart', onFirstInteraction);
   }
-  natureAudioStarted = true;
+  document.addEventListener('click', onFirstInteraction);
+  document.addEventListener('touchstart', onFirstInteraction);
 }
 
 /* ─── SCROLL REVEAL ─── */
@@ -82,12 +97,23 @@ var musicStarted = false;
 
 function onYouTubeIframeAPIReady() {
   try {
+    // Player de música: "Contigo" - Los Panchos
     player = new YT.Player('youtube-player', {
       videoId: 'F1COh7t3el4', height: 1, width: 1,
       playerVars: { autoplay: 0, loop: 1, playlist: 'F1COh7t3el4', controls: 0, disablekb: 1, modestbranding: 1, rel: 0, fs: 0, iv_load_policy: 3, cc_load_policy: 0 },
       events: {
         onReady: function (e) { e.target.setVolume(50); e.target.mute(); e.target.playVideo(); },
-        onError: function (e) { console.log('YouTube error:', e.data); }
+        onError: function (e) { console.log('YouTube music error:', e.data); }
+      }
+    });
+
+    // Player de naturaleza: Río + pájaros
+    naturePlayer = new YT.Player('youtube-player-nature', {
+      videoId: 'PwSHOI7DwWM', height: 1, width: 1,
+      playerVars: { autoplay: 0, loop: 1, playlist: 'PwSHOI7DwWM', controls: 0, disablekb: 1, modestbranding: 1, rel: 0, fs: 0, iv_load_policy: 3, cc_load_policy: 0 },
+      events: {
+        onReady: function (e) { e.target.setVolume(30); e.target.mute(); e.target.playVideo(); },
+        onError: function (e) { console.log('YouTube nature error:', e.data); }
       }
     });
   } catch (err) { console.log('YouTube player error:', err); }
@@ -187,6 +213,12 @@ var slideSystem = {
 
     if (!this.container || !this.totalSlides) return;
 
+    // Activar primer slide
+    this.slides[0].classList.add('active');
+    this.slides[0].style.visibility = 'visible';
+    this.slides[0].style.opacity = '1';
+    this.slides[0].style.transform = 'translateX(0)';
+
     this.bindEvents();
     this.updateUI();
   },
@@ -263,9 +295,9 @@ var slideSystem = {
     var oldSlide = this.slides[oldIndex];
     var newSlide = this.slides[index];
 
-    // Exit old slide
+    // Exit old slide with ripple effect
     oldSlide.classList.remove('active');
-    oldSlide.classList.add(direction > 0 ? 'exit-left' : '');
+    oldSlide.classList.add('ripple-exit');
     oldSlide.style.transform = direction > 0 ? 'translateX(-100%)' : 'translateX(100%)';
     oldSlide.style.opacity = '0';
 
@@ -293,9 +325,11 @@ var slideSystem = {
     // Clean up old slide
     setTimeout(function () {
       oldSlide.classList.remove('exit-left');
+      oldSlide.classList.remove('ripple-exit');
       oldSlide.style.visibility = 'hidden';
       oldSlide.style.transform = '';
       oldSlide.style.opacity = '';
+      oldSlide.style.filter = '';
       self.isAnimating = false;
     }, 650);
   },
@@ -328,8 +362,9 @@ var slideSystem = {
     var slide = this.slides[index];
     if (!slide) return;
 
-    // Kill any existing animations on this slide
-    gsap.killTweensOf(slide.querySelectorAll('*'));
+    // Kill any existing animations on this slide (excluir decoraciones de fondo)
+    var animatedElements = slide.querySelectorAll('.slide-content *, .slide-icon-big, .slide-day, .slide-month, .slide-time, .slide-time-divider, .slide-text-greeting, .slide-text-body, .slide-title, .checklist-item, .slide-italic, .slide-text-closing, .slide-name, .slide-final-heart');
+    gsap.killTweensOf(animatedElements);
 
     switch (index) {
       case 0: this.animateGreeting(slide); break;
@@ -366,7 +401,11 @@ var slideSystem = {
     var text = slide.querySelector('.slide-text-body');
     if (!text) return;
 
-    var fullText = text.textContent;
+    // Guardar texto original solo la primera vez
+    if (!text.dataset.original) {
+      text.dataset.original = text.textContent;
+    }
+    var fullText = text.dataset.original;
     text.textContent = '';
     text.style.opacity = '1';
 
@@ -624,9 +663,6 @@ function initInvitation() {
   flowerWrapper.addEventListener('click', function openFlower() {
     flowerWrapper.removeEventListener('click', openFlower);
 
-    // Start nature sounds
-    startNatureSounds();
-
     var tlOpen = gsap.timeline();
     tlOpen
       // Hide hint
@@ -678,6 +714,7 @@ document.addEventListener('DOMContentLoaded', function () {
     invitation.style.display = 'flex';
     createInvitationEffects();
     initInvitation();
+    initFirstInteraction();
   } else {
     createFallingLeaves();
     initScrollReveal();
@@ -692,8 +729,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var mainContent = document.getElementById('mainContent');
   if (enterBtn && mainContent) {
     enterBtn.addEventListener('click', function () {
-      startMusic();
-      startNatureSounds();
       mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#FAF4EC">
   <title>Para Rebecca 💗</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -281,17 +282,6 @@
   </div>
 </div>
 
-<!-- ─── PATHS PARA CORAZONES (MotionPath) ─── -->
-<svg class="hearts-path-svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
-  <defs>
-    <path id="heartCurve1" d="M150,500 C50,350 250,200 150,20"/>
-    <path id="heartCurve2" d="M60,500 C160,350 -40,200 60,20"/>
-    <path id="heartCurve3" d="M240,500 C340,350 140,200 240,20"/>
-    <path id="heartCurve4" d="M100,500 C200,350 0,250 100,50"/>
-    <path id="heartCurve5" d="M200,500 C300,350 100,250 200,50"/>
-  </defs>
-</svg>
-
 <!-- ─── LIGHTBOX (compartido) ─── -->
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
@@ -299,20 +289,12 @@
 </div>
 
 <div id="youtube-player" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;overflow:hidden;z-index:-1;" aria-hidden="true"></div>
+<div id="youtube-player-nature" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;overflow:hidden;z-index:-1;" aria-hidden="true"></div>
 
 <!-- ─── SCRIPTS ─── -->
-<!-- Audio naturaleza -->
-<audio id="natureAudio" loop preload="auto">
-  <source src="https://cdn.freesound.org/previews/526/526955_11861866-lq.mp3" type="audio/mpeg">
-</audio>
-<audio id="waterAudio" loop preload="auto" volume="0.3">
-  <source src="https://cdn.freesound.org/previews/341/341695_5858296-lq.mp3" type="audio/mpeg">
-</audio>
-
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MorphSVG.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPath.min.js"></script>
 <script src="script.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
