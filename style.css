@@ -367,6 +367,59 @@ body {
   padding: 0 0.3rem;
 }
 
+/* ─── VIDEO FRAME ─── */
+.video-frame {
+  background: #fff;
+  padding: 10px 10px 45px 10px;
+  box-shadow:
+    0 8px 30px rgba(194, 24, 91, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  width: 100%;
+  margin: 0 auto;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.4s ease;
+}
+
+.video-frame:hover {
+  box-shadow:
+    0 12px 40px rgba(194, 24, 91, 0.15),
+    0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.video-frame video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+}
+
+.video-play-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Dancing Script', cursive;
+  font-size: 0.95rem;
+  color: #c2185b;
+  background: rgba(255,255,255,0.85);
+  padding: 4px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.video-frame:hover .video-play-hint {
+  opacity: 1;
+}
+
+.video-frame--gallery {
+  width: 100%;
+  max-width: 100%;
+}
+
 /* ─── SIGNATURE ─── */
 .signature {
   text-align: center;
@@ -566,6 +619,9 @@ footer {
   .gallery-caption {
     font-size: 1.1rem;
   }
+  .video-play-hint {
+    font-size: 1.05rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -638,4 +694,248 @@ footer {
 .polaroid-frame img,
 .gallery-item .polaroid-frame img {
   cursor: zoom-in;
+}
+
+/* ─── INVITACIÓN ─── */
+#invitation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 30%, #ce93d8 60%, #f48fb1 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+#invitation::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+  background-size: 18px 18px, 30px 30px;
+  background-position: 0 0, 9px 9px;
+  pointer-events: none;
+}
+
+.invitation-petals {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* ─── SVG ENVELOPE ─── */
+.envelope-wrapper {
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.envelope-svg {
+  width: 280px;
+  height: auto;
+  filter: drop-shadow(0 8px 24px rgba(194, 24, 91, 0.2));
+  transition: filter 0.3s ease;
+}
+
+.envelope-wrapper:active .envelope-svg {
+  filter: drop-shadow(0 12px 32px rgba(194, 24, 91, 0.3));
+}
+
+.env-flap {
+  transform-origin: 150px 60px;
+}
+
+.env-seal {
+  animation: heartbeat 2s ease-in-out infinite;
+  cursor: pointer;
+}
+
+.envelope-hint {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1rem;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(194, 24, 91, 0.3);
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.7; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-4px); }
+}
+
+/* ─── LETTER WRAPPER ─── */
+.letter-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  padding: 1rem;
+  pointer-events: none;
+}
+
+.letter-wrapper[style*="opacity: 1"],
+.letter-wrapper[style*="opacity:1"] {
+  pointer-events: auto;
+}
+
+.letter-card {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 380px;
+  max-height: 88vh;
+  max-height: 88dvh;
+  overflow-y: auto;
+  box-shadow:
+    0 20px 60px rgba(194, 24, 91, 0.15),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+  -webkit-overflow-scrolling: touch;
+}
+
+.letter-card::-webkit-scrollbar {
+  width: 3px;
+}
+.letter-card::-webkit-scrollbar-thumb {
+  background: #f48fb1;
+  border-radius: 3px;
+}
+
+/* ─── LETTER CONTENT ─── */
+.letter-content {
+  padding: 1.8rem 1.4rem;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: #5d2e46;
+}
+
+.letter-content p {
+  margin-bottom: 0.6rem;
+}
+
+.letter-greeting {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.7rem;
+  color: #c2185b;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.letter-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #c2185b;
+  text-align: center;
+  margin: 1.2rem 0 0.5rem;
+}
+
+.letter-detail {
+  text-align: center;
+  margin: 0.5rem 0 1rem;
+}
+
+.letter-date {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #880e4f;
+}
+
+.letter-time {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #c2185b;
+  letter-spacing: 2px;
+}
+
+.letter-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.3rem 0 0.8rem;
+}
+
+.letter-list li {
+  padding: 0.2rem 0;
+  padding-left: 0.3rem;
+}
+
+.letter-signature {
+  text-align: center;
+  margin-top: 1.2rem;
+  padding-top: 0.8rem;
+  border-top: 1.5px solid #f8bbd0;
+}
+
+.letter-signature p:first-child {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1rem;
+  color: #5d2e46;
+}
+
+.letter-signature-name {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.8rem;
+  color: #c2185b;
+}
+
+/* ─── SPLIT TEXT LINES ─── */
+.split-line {
+  overflow: hidden;
+}
+
+/* ─── FLOATING HEARTS ─── */
+.floating-heart {
+  will-change: transform, opacity;
+}
+
+/* ─── INVITACIÓN RESPONSIVE ─── */
+@media (min-width: 480px) {
+  .envelope-svg {
+    width: 320px;
+  }
+  .letter-content {
+    padding: 2rem 1.6rem;
+    font-size: 0.88rem;
+  }
+  .letter-greeting {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .envelope-svg {
+    width: 360px;
+  }
+  .letter-card {
+    max-width: 420px;
+  }
+  .letter-content {
+    padding: 2.2rem 2rem;
+    font-size: 0.92rem;
+  }
+  .letter-greeting {
+    font-size: 2rem;
+  }
+  .letter-section-title {
+    font-size: 1rem;
+  }
 }
