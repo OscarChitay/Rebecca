@@ -540,6 +540,7 @@ body {
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
+  transition: opacity 0.7s ease;
 }
 
 .slides-container.active {
@@ -1047,6 +1048,16 @@ body {
 @media (min-width: 768px) {
   .slide-img-tl, .slide-img-tr, .slide-img-bl, .slide-img-br { width: 120px; }
   .slide-img-bg { width: 220px; }
+}
+
+@media (max-width: 600px) {
+  .bokeh-container {
+    display: none;
+  }
+
+  .petal-mandala {
+    filter: none;
+  }
 }
 
 /* ─── LIGHTBOX ─── */

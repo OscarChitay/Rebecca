@@ -3,7 +3,8 @@ function createFallingLeaves() {
   var container = document.getElementById('fallingLeaves');
   if (!container) return;
   var leafClasses = ['leaf-green', 'leaf-sage', 'leaf-gold', 'leaf-rose'];
-  for (var i = 0; i < 25; i++) {
+  var count = window.matchMedia && window.matchMedia('(max-width: 600px)').matches ? 12 : 25;
+  for (var i = 0; i < count; i++) {
     var leaf = document.createElement('div');
     var leafClass = leafClasses[Math.floor(Math.random() * leafClasses.length)];
     leaf.className = 'leaf ' + leafClass;
@@ -20,7 +21,8 @@ function createBokehLights() {
   var container = document.getElementById('bokehContainer');
   if (!container) return;
   var colors = ['#8FA888', '#F2C4CE', '#C9A96E', '#C9B1D9', '#D4A0A4'];
-  for (var i = 0; i < 15; i++) {
+  var count = window.matchMedia && window.matchMedia('(max-width: 600px)').matches ? 6 : 15;
+  for (var i = 0; i < count; i++) {
     var bokeh = document.createElement('div');
     bokeh.className = 'bokeh-light';
     var color = colors[Math.floor(Math.random() * colors.length)];
@@ -37,7 +39,8 @@ function createFloatingPetals() {
   var container = document.getElementById('invitationPetals');
   if (!container) return;
   var petalTones = ['', 'petal-tone-ivory', 'petal-tone-rose'];
-  for (var i = 0; i < 12; i++) {
+  var count = window.matchMedia && window.matchMedia('(max-width: 600px)').matches ? 7 : 12;
+  for (var i = 0; i < count; i++) {
     var petal = document.createElement('div');
     var tone = petalTones[i % petalTones.length];
     petal.className = 'floating-petal invitation-petal ' + tone;
@@ -632,7 +635,11 @@ var slideSystem = {
 function initInvitation() {
   var flowerWrapper = document.getElementById('flowerWrapper');
   var slidesContainer = document.getElementById('slidesContainer');
-  if (!flowerWrapper || !slidesContainer || typeof gsap === 'undefined') return;
+  if (!flowerWrapper || !slidesContainer) return;
+  if (typeof gsap === 'undefined') {
+    setTimeout(initInvitation, 100);
+    return;
+  }
 
   var hint = flowerWrapper.querySelector('.flower-hint');
   var halo = flowerWrapper.querySelector('.flower-halo');
@@ -643,6 +650,7 @@ function initInvitation() {
   var centerGroup = flowerWrapper.querySelector('.flower-center-group');
   var stamens = flowerWrapper.querySelectorAll('.stamen');
   var particlesContainer = document.getElementById('flowerParticles');
+  var isCompact = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
 
   if (typeof SplitText !== 'undefined') gsap.registerPlugin(SplitText);
   if (typeof MotionPath !== 'undefined') gsap.registerPlugin(MotionPath);
@@ -735,14 +743,12 @@ function initInvitation() {
     });
 
     mandalaGroups.forEach(function (group, i) {
-      var petalsInGroup = group.querySelectorAll('.petal-mandala');
-      gsap.to(petalsInGroup, {
+      gsap.to(group, {
         scale: 1.01 + (i * 0.003),
-        duration: 1.8 + (i * 0.3),
+        duration: isCompact ? 2.8 + (i * 0.2) : 1.8 + (i * 0.3),
         yoyo: true,
         repeat: -1,
-        ease: 'sine.inOut',
-        stagger: 0.08
+        ease: 'sine.inOut'
       });
     });
 
@@ -756,8 +762,8 @@ function initInvitation() {
     });
 
     gsap.to(flowerWrapper.querySelector('.flower-svg'), {
-      rotation: 2,
-      duration: 8,
+      rotation: isCompact ? 1 : 2,
+      duration: isCompact ? 12 : 8,
       yoyo: true,
       repeat: -1,
       ease: 'sine.inOut'
@@ -770,80 +776,34 @@ function initInvitation() {
   flowerWrapper.addEventListener('click', function openFlower() {
     flowerWrapper.removeEventListener('click', openFlower);
 
+    var flowerSvg = flowerWrapper.querySelector('.flower-svg');
+    gsap.killTweensOf(halo);
+    gsap.killTweensOf(shimmerRings);
+    gsap.killTweensOf(allPetals);
+    gsap.killTweensOf(mandalaGroups);
+    gsap.killTweensOf(centerGroup);
+    gsap.killTweensOf(flowerSvg);
+
     var tlOpen = gsap.timeline();
-
-    tlOpen.to(hint, { opacity: 0, duration: 0.15 });
-
-    tlOpen.to(shimmerRings, {
-      opacity: 0.8,
-      scale: 1.8,
-      duration: 0.5,
-      stagger: 0.05,
-      ease: 'power2.out'
-    });
-
+    tlOpen.to(hint, { opacity: 0, duration: 0.25, ease: 'sine.inOut' }, 0);
+    tlOpen.to(allPetals, { opacity: 0, scale: 1.015, duration: 0.95, ease: 'sine.inOut' }, 0.05);
+    tlOpen.to(centerGroup, { opacity: 0, scale: 1.04, duration: 0.75, ease: 'sine.inOut' }, 0.1);
+    tlOpen.to(stamens, { opacity: 0, duration: 0.5, ease: 'sine.inOut' }, 0.1);
+    tlOpen.to(dewDrops, { opacity: 0, duration: 0.45, ease: 'sine.inOut' }, 0.15);
+    tlOpen.to(shimmerRings, { opacity: 0, scale: 1.12, strokeDashoffset: 500, duration: 0.8, stagger: 0.04, ease: 'sine.inOut' }, 0.15);
+    tlOpen.to(halo, { opacity: 0, scale: 1.3, duration: 1.05, ease: 'power1.out' }, 0);
+    tlOpen.to(flowerSvg, { opacity: 0, scale: 1.04, duration: 0.9, ease: 'sine.inOut' }, 0.2);
     tlOpen.add(function () {
-      createFlowerParticles(15, 'gold');
-      createFlowerParticles(10, 'pink');
-      createFlowerParticles(5, 'white');
-    }, '-=0.3');
-
-    // Pétalos se expanden y desaparecen de afuera hacia adentro
-    mandalaGroups.forEach(function (group, i) {
-      var petalsInGroup = group.querySelectorAll('.petal-mandala');
-      tlOpen.to(petalsInGroup, {
-        scale: 1.5 + (i * 0.15),
-        opacity: 0,
-        duration: 0.4,
-        stagger: 0.02,
-        ease: 'power2.out'
-      }, i === 0 ? '-=0.2' : '-=0.35');
-    });
-
-    tlOpen.to(centerGroup, {
-      scale: 2.5,
-      opacity: 0,
-      duration: 0.4,
-      ease: 'power2.in'
-    }, '-=0.3');
-
-    tlOpen.to(halo, {
-      scale: 2.5,
-      opacity: 0,
-      duration: 0.5,
-      ease: 'power2.in'
-    }, '-=0.2');
-
-    tlOpen.to(shimmerRings, {
-      scale: 3,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power2.in'
-    }, '-=0.3');
-
-    tlOpen.to(dewDrops, {
-      opacity: 0,
-      duration: 0.2,
-      ease: 'power2.in'
-    }, '-=0.3');
-
-    tlOpen.to(flowerWrapper, {
-      opacity: 0,
-      duration: 0.3,
-      ease: 'power2.in'
-    }, '-=0.1');
-
+      createFlowerParticles(isCompact ? 5 : 10, 'gold');
+      createFlowerParticles(isCompact ? 3 : 6, 'pink');
+      createFlowerParticles(isCompact ? 1 : 3, 'white');
+    }, 0.25);
+    tlOpen.to(flowerWrapper, { opacity: 0, duration: 0.35, ease: 'sine.inOut' }, 0.8);
     tlOpen.add(function () {
       slidesContainer.classList.add('active');
-      startNatureSounds();
+      startNatureSounds(true);
       if (typeof slideSystem !== 'undefined') slideSystem.init();
-    });
-
-    tlOpen.add(function () {
-      createFlowerParticles(15, 'gold');
-      createFlowerParticles(10, 'pink');
-      createFlowerParticles(5, 'white');
-    }, '-=0.3');
+    }, 1.0);
   });
 }
 
