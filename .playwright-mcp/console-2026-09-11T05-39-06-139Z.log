@@ -1,0 +1,16 @@
+[     504ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('http://127.0.0.1:8080'). @ https://www.youtube.com/s/player/8c3fda2d/www-widgetapi.vflset/www-widgetapi.js:162
+[     781ms] [LOG] YouTube music error: 150 @ http://127.0.0.1:8080/script.js:105
+[    1547ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[    1650ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   96004ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8080/favicon.ico:0
+[   96847ms] [LOG] YouTube music error: 150 @ http://127.0.0.1:8080/script.js:105
+[   97197ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   97430ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  127376ms] [LOG] YouTube music error: 150 @ http://127.0.0.1:8080/script.js:105
+[  127795ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  129044ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  496106ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('http://127.0.0.1:8080'). @ https://www.youtube.com/s/player/8c3fda2d/www-widgetapi.vflset/www-widgetapi.js:162
+[  496106ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('http://127.0.0.1:8080'). @ https://www.youtube.com/s/player/8c3fda2d/www-widgetapi.vflset/www-widgetapi.js:162
+[  496458ms] [LOG] YouTube music error: 150 @ http://127.0.0.1:8080/script.js:105
+[  497072ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  497149ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0

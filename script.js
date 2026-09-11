@@ -623,83 +623,442 @@ function initInvitation() {
   if (!flowerWrapper || !slidesContainer || typeof gsap === 'undefined') return;
 
   var hint = flowerWrapper.querySelector('.flower-hint');
-  var petalGroups = flowerWrapper.querySelectorAll('.petal-group-outer, .petal-group-mid, .petal-group-inner');
-  var center = flowerWrapper.querySelector('.flower-center');
+  var stem = flowerWrapper.querySelector('.flower-stem');
+  var leaves = flowerWrapper.querySelectorAll('.leaf');
   var halo = flowerWrapper.querySelector('.flower-halo');
+  var shimmerRings = flowerWrapper.querySelectorAll('.shimmer-ring');
+  var petalExtraOuter = flowerWrapper.querySelectorAll('.petal-extra-outer');
+  var petalOuter = flowerWrapper.querySelectorAll('.petal-outer');
+  var petalMid = flowerWrapper.querySelectorAll('.petal-mid');
+  var petalInner = flowerWrapper.querySelectorAll('.petal-inner');
+  var petalCore = flowerWrapper.querySelectorAll('.petal-core');
+  var dewDrops = flowerWrapper.querySelector('.dew-drops');
+  var centerGroup = flowerWrapper.querySelector('.flower-center-group');
+  var stamens = flowerWrapper.querySelectorAll('.stamen');
+  var particlesContainer = document.getElementById('flowerParticles');
 
   // Register plugins
   if (typeof SplitText !== 'undefined') gsap.registerPlugin(SplitText);
   if (typeof MotionPath !== 'undefined') gsap.registerPlugin(MotionPath);
 
   // Initial state
-  gsap.set(flowerWrapper, { opacity: 0, scale: 0.5 });
+  gsap.set(flowerWrapper, { opacity: 0 });
+  gsap.set(stem, { strokeDashoffset: 280 });
+  gsap.set(leaves, { opacity: 0, scale: 0 });
+  gsap.set(halo, { opacity: 0, scale: 0.8 });
+  gsap.set(shimmerRings, { opacity: 0, scale: 0.5, strokeDashoffset: 500 });
+  gsap.set(petalExtraOuter, { opacity: 0, scale: 0 });
+  gsap.set(petalOuter, { opacity: 0, scale: 0 });
+  gsap.set(petalMid, { opacity: 0, scale: 0 });
+  gsap.set(petalInner, { opacity: 0, scale: 0 });
+  gsap.set(petalCore, { opacity: 0, scale: 0 });
+  gsap.set(dewDrops, { opacity: 0 });
+  gsap.set(centerGroup, { opacity: 0, scale: 0 });
+  gsap.set(stamens, { opacity: 0, scale: 0 });
   gsap.set(hint, { opacity: 0 });
-  gsap.set(petalGroups, { scale: 0, transformOrigin: '50% 50%' });
-  gsap.set(center, { scale: 0 });
 
-  // Phase 1-3: Flor appears with bloom animation
+  // ═══════════════════════════════════════════
+  // FASE 1: APARICIÓN (0 - 0.8s)
+  // ═══════════════════════════════════════════
   var tlIntro = gsap.timeline();
-  tlIntro
-    .to(flowerWrapper, { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' })
-    .to(halo, { opacity: 0.6, duration: 0.8, ease: 'power2.out' }, '-=0.3')
-    .to(center, { scale: 1, duration: 0.5, ease: 'back.out(2)' }, '-=0.4')
-    .to(petalGroups[2], { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }, '-=0.2')
-    .to(petalGroups[1], { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }, '-=0.3')
-    .to(petalGroups[0], { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }, '-=0.3')
-    .to(hint, { opacity: 1, duration: 0.3 }, '-=0.1');
 
-  // Gentle petal breathing animation
-  gsap.to(petalGroups[0], {
-    scale: 1.03, duration: 2, yoyo: true, repeat: -1, ease: 'sine.inOut'
-  });
-  gsap.to(petalGroups[1], {
-    scale: 1.02, duration: 2.5, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 0.3
-  });
-  gsap.to(petalGroups[2], {
-    scale: 1.04, duration: 1.8, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 0.6
+  // Flor completa aparece
+  tlIntro.to(flowerWrapper, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+
+  // Tallo crece desde abajo
+  tlIntro.to(stem, {
+    strokeDashoffset: 0,
+    duration: 0.7,
+    ease: 'power2.out'
+  }, '-=0.1');
+
+  // Hojas se despliegan
+  tlIntro.to(leaves, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.5,
+    stagger: 0.15,
+    ease: 'back.out(1.8)'
+  }, '-=0.3');
+
+  // ═══════════════════════════════════════════
+  // FASE 2: CENTRO (0.6 - 1.2s)
+  // ═══════════════════════════════════════════
+  tlIntro.to(halo, {
+    opacity: 0.5,
+    scale: 1,
+    duration: 0.6,
+    ease: 'power2.out'
+  }, '-=0.2');
+
+  tlIntro.to(centerGroup, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.5,
+    ease: 'back.out(2.5)'
+  }, '-=0.3');
+
+  // Estambres aparecen
+  tlIntro.to(stamens, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.3,
+    stagger: 0.04,
+    ease: 'back.out(3)'
+  }, '-=0.1');
+
+  // ═══════════════════════════════════════════
+  // FASE 3: PÉTALOS CORE (1.0 - 1.4s)
+  // ═══════════════════════════════════════════
+  tlIntro.to(petalCore, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.4,
+    stagger: 0.06,
+    ease: 'back.out(2.5)'
+  }, '-=0.1');
+
+  // ═══════════════════════════════════════════
+  // FASE 4: PÉTALOS INTERNOS (1.2 - 1.7s)
+  // ═══════════════════════════════════════════
+  tlIntro.to(petalInner, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.5,
+    stagger: 0.07,
+    ease: 'back.out(2)'
+  }, '-=0.1');
+
+  // ═══════════════════════════════════════════
+  // FASE 5: PÉTALOS MEDIOS (1.5 - 2.0s)
+  // ═══════════════════════════════════════════
+  tlIntro.to(petalMid, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.5,
+    stagger: 0.07,
+    ease: 'back.out(1.8)'
+  }, '-=0.2');
+
+  // ═══════════════════════════════════════════
+  // FASE 6: PÉTALOS EXTERIORES (1.8 - 2.4s)
+  // ═══════════════════════════════════════════
+  tlIntro.to(petalOuter, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.6,
+    stagger: 0.08,
+    ease: 'back.out(1.4)'
+  }, '-=0.2');
+
+  // ═══════════════════════════════════════════
+  // FASE 7: PÉTALOS EXTRA-EXTERIORES (2.1 - 2.8s)
+  // ═══════════════════════════════════════════
+  tlIntro.to(petalExtraOuter, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.6,
+    stagger: 0.08,
+    ease: 'back.out(1.2)'
+  }, '-=0.2');
+
+  // ═══════════════════════════════════════════
+  // FASE 8: EFECTOS PREMIUM (2.5 - 3.2s)
+  // ═══════════════════════════════════════════
+  // Shimmer rings se expanden
+  tlIntro.to(shimmerRings, {
+    opacity: 0.5,
+    scale: 1,
+    strokeDashoffset: 0,
+    duration: 0.8,
+    stagger: 0.1,
+    ease: 'power2.out'
+  }, '-=0.3');
+
+  // Gotas de rocío aparecen
+  tlIntro.to(dewDrops, {
+    opacity: 1,
+    duration: 0.5,
+    ease: 'power2.out'
+  }, '-=0.4');
+
+  // Partículas doradas iniciales
+  tlIntro.add(function () {
+    createFlowerParticles(8, 'gold');
+    createFlowerParticles(4, 'pink');
+  }, '-=0.4');
+
+  // Hint aparece
+  tlIntro.to(hint, {
+    opacity: 1,
+    duration: 0.4,
+    ease: 'power2.out'
+  }, '-=0.1');
+
+  // ═══════════════════════════════════════════
+  // FASE 9: BREATHING LOOP (después de apertura)
+  // ═══════════════════════════════════════════
+  tlIntro.add(function () {
+    // Halo pulsa suavemente
+    gsap.to(halo, {
+      scale: 1.05,
+      opacity: 0.6,
+      duration: 2.5,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut'
+    });
+
+    // Pétalos extra-externos respiran
+    gsap.to(petalExtraOuter, {
+      scale: 1.015,
+      duration: 2.8,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+      stagger: 0.25
+    });
+
+    // Pétalos externos respiran
+    gsap.to(petalOuter, {
+      scale: 1.02,
+      duration: 2.2,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+      stagger: 0.2
+    });
+
+    // Pétalos medios respiran
+    gsap.to(petalMid, {
+      scale: 1.015,
+      duration: 2.6,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+      stagger: 0.15
+    });
+
+    // Pétalos internos respiran
+    gsap.to(petalInner, {
+      scale: 1.025,
+      duration: 1.9,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+      stagger: 0.1
+    });
+
+    // Pétalos core respiran
+    gsap.to(petalCore, {
+      scale: 1.03,
+      duration: 1.7,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+      stagger: 0.08
+    });
+
+    // Shimmer rings pulsan
+    gsap.to(shimmerRings, {
+      opacity: 0.3,
+      duration: 2,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+      stagger: 0.3
+    });
+
+    // Rotación muy sutil de toda la flor
+    gsap.to(flowerWrapper.querySelector('.flower-svg'), {
+      rotation: 2,
+      duration: 8,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut'
+    });
   });
 
-  // Phase 4-6: Tap to open flower
+  // ═══════════════════════════════════════════
+  // FASE 8: CLICK PARA ABRIR
+  // ═══════════════════════════════════════════
   flowerWrapper.addEventListener('click', function openFlower() {
     flowerWrapper.removeEventListener('click', openFlower);
 
     var tlOpen = gsap.timeline();
-    tlOpen
-      // Hide hint
-      .to(hint, { opacity: 0, duration: 0.2 })
-      // Petals expand outward (bloom burst)
-      .to(petalGroups[0], {
-        scale: 2.5, opacity: 0, rotation: 15, duration: 0.8, ease: 'power2.out'
-      })
-      .to(petalGroups[1], {
-        scale: 2.2, opacity: 0, rotation: -10, duration: 0.7, ease: 'power2.out'
-      }, '-=0.6')
-      .to(petalGroups[2], {
-        scale: 2, opacity: 0, rotation: 8, duration: 0.6, ease: 'power2.out'
-      }, '-=0.5')
-      // Center grows and glows
-      .to(center, {
-        scale: 3, opacity: 0, duration: 0.5, ease: 'power2.in'
-      }, '-=0.4')
-      // Halo expands
-      .to(halo, {
-        scale: 3, opacity: 0, duration: 0.6, ease: 'power2.in'
-      }, '-=0.3')
-      // Flower fades out
-      .to(flowerWrapper, {
-        opacity: 0, scale: 1.2, duration: 0.4, ease: 'power2.in'
-      }, '-=0.2')
-      // Show slides container
-      .add(function () {
-        slidesContainer.classList.add('active');
-        slideSystem.init();
-        startMusic();
-        // Animate first slide
-        setTimeout(function () {
-          slideSystem.animateSlideContent(0);
-        }, 300);
-      });
+
+    // Ocultar hint
+    tlOpen.to(hint, { opacity: 0, duration: 0.15 });
+
+    // Shimmer se intensifica
+    tlOpen.to(shimmerRings, {
+      opacity: 0.8,
+      scale: 1.8,
+      duration: 0.5,
+      stagger: 0.05,
+      ease: 'power2.out'
+    });
+
+    // Más partículas
+    tlOpen.add(function () {
+      createFlowerParticles(15, 'gold');
+      createFlowerParticles(10, 'pink');
+      createFlowerParticles(5, 'white');
+    }, '-=0.3');
+
+    // Pétalos core se expanden
+    tlOpen.to(petalCore, {
+      scale: 2,
+      opacity: 0,
+      duration: 0.4,
+      stagger: 0.03,
+      ease: 'power2.out'
+    }, '-=0.2');
+
+    // Pétalos internos se expanden
+    tlOpen.to(petalInner, {
+      scale: 1.8,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.04,
+      ease: 'power2.out'
+    }, '-=0.3');
+
+    // Pétalos medios se expanden
+    tlOpen.to(petalMid, {
+      scale: 2,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.04,
+      ease: 'power2.out'
+    }, '-=0.3');
+
+    // Pétalos externos se expanden
+    tlOpen.to(petalOuter, {
+      scale: 2.2,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.05,
+      ease: 'power2.out'
+    }, '-=0.3');
+
+    // Pétalos extra-externos se expanden
+    tlOpen.to(petalExtraOuter, {
+      scale: 2.5,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.05,
+      ease: 'power2.out'
+    }, '-=0.4');
+
+    // Centro crece y desaparece
+    tlOpen.to(centerGroup, {
+      scale: 2.5,
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power2.in'
+    }, '-=0.3');
+
+    // Halo se expande
+    tlOpen.to(halo, {
+      scale: 2.5,
+      opacity: 0,
+      duration: 0.5,
+      ease: 'power2.in'
+    }, '-=0.2');
+
+    // Shimmer rings se expanden y desaparecen
+    tlOpen.to(shimmerRings, {
+      scale: 3,
+      opacity: 0,
+      duration: 0.6,
+      ease: 'power2.in'
+    }, '-=0.3');
+
+    // Tallo se desvanece
+    tlOpen.to(stem, {
+      opacity: 0,
+      y: -20,
+      duration: 0.4,
+      ease: 'power2.in'
+    }, '-=0.4');
+
+    // Hojas desaparecen
+    tlOpen.to(leaves, {
+      opacity: 0,
+      scale: 0.5,
+      duration: 0.3,
+      ease: 'power2.in'
+    }, '-=0.3');
+
+    // Gotas de rocío desaparecen
+    tlOpen.to(dewDrops, {
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power2.in'
+    }, '-=0.3');
+
+    // Flor completa se desvanece
+    tlOpen.to(flowerWrapper, {
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power2.in'
+    }, '-=0.1');
+
+    // Mostrar slides
+    tlOpen.add(function () {
+      slidesContainer.classList.add('active');
+      slideSystem.init();
+      startMusic();
+      setTimeout(function () {
+        slideSystem.animateSlideContent(0);
+      }, 300);
+    });
   });
+}
+
+// ═══════════════════════════════════════════════
+// FUNCIÓN DE PARTÍCULAS PREMIUM
+// ═══════════════════════════════════════════════
+function createFlowerParticles(count, type) {
+  var container = document.getElementById('flowerParticles');
+  if (!container) return;
+
+  for (var i = 0; i < count; i++) {
+    var particle = document.createElement('div');
+    particle.className = 'particle particle-' + type;
+    particle.style.left = '50%';
+    particle.style.top = '48%';
+    container.appendChild(particle);
+
+    var angle = (Math.PI * 2 * i) / count + (Math.random() * 0.5 - 0.25);
+    var distance = 50 + Math.random() * 80;
+    var size = 3 + Math.random() * 4;
+
+    gsap.set(particle, { width: size, height: size });
+
+    gsap.to(particle, {
+      x: Math.cos(angle) * distance,
+      y: Math.sin(angle) * distance - 20,
+      opacity: 0.9,
+      duration: 0.5,
+      delay: i * 0.03,
+      ease: 'power2.out'
+    });
+
+    gsap.to(particle, {
+      y: '-=40',
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.5 + i * 0.03,
+      ease: 'power1.in',
+      onComplete: function () {
+        if (this.target && this.target.parentNode) {
+          this.target.parentNode.removeChild(this.target);
+        }
+      }
+    });
+  }
 }
 
 /* ═══════════════════════════════════════════════

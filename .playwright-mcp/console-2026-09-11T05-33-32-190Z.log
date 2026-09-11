@@ -1,0 +1,5 @@
+[     746ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('http://127.0.0.1:8080'). @ https://www.youtube.com/s/player/8c3fda2d/www-widgetapi.vflset/www-widgetapi.js:162
+[    2127ms] [LOG] YouTube music error: 150 @ http://127.0.0.1:8080/script.js:105
+[    2466ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8080/favicon.ico:0
+[    4527ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[    5532ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
