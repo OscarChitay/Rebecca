@@ -104,15 +104,32 @@ body {
   will-change: transform, opacity;
 }
 
-@keyframes floatPetal {
+.invitation-petal {
+  animation-name: fallingPetal;
+  opacity: 0;
+}
+
+.petal-tone-ivory {
+  background: radial-gradient(ellipse at 30% 30%, #FFF8F1, #F5D5DC);
+}
+
+.petal-tone-rose {
+  background: radial-gradient(ellipse at 30% 30%, #F8E8EE, #D4A0A4);
+}
+
+@keyframes fallingPetal {
   0% {
-    transform: translateY(100vh) translateX(0) rotate(0deg);
+    transform: translate3d(0, -40px, 0) rotate(-25deg) scale(0.85);
     opacity: 0;
   }
-  10% { opacity: 0.8; }
-  90% { opacity: 0.8; }
+  12% { opacity: 0.58; }
+  50% {
+    transform: translate3d(var(--drift-mid), 50vh, 0) rotate(var(--spin-mid)) scale(1);
+    opacity: 0.58;
+  }
+  88% { opacity: 0.5; }
   100% {
-    transform: translateY(-20px) translateX(40px) rotate(360deg);
+    transform: translate3d(var(--drift-end), 110vh, 0) rotate(var(--spin-end)) scale(0.9);
     opacity: 0;
   }
 }
@@ -396,7 +413,7 @@ body {
   width: min(320px, calc(100vw - 24px), calc((100dvh - 72px) * 0.8));
   height: auto;
   max-width: 100%;
-  filter: drop-shadow(0 10px 40px rgba(212,160,164,0.35));
+  filter: drop-shadow(0 10px 40px rgba(212,160,164,0.5));
   transition: filter 0.3s ease, transform 0.3s ease;
   overflow: visible;
 }
@@ -416,7 +433,8 @@ body {
 /* ─── SHIMMER RINGS ─── */
 .shimmer-ring {
   opacity: 0;
-  transform-origin: 200px 250px;
+  transform-box: fill-box;
+  transform-origin: center;
   stroke-dasharray: 500;
   stroke-dashoffset: 500;
 }
@@ -429,10 +447,12 @@ body {
 
 .petal-mandala {
   transform-origin: 200px 250px;
+  filter: url(#petalShadow);
 }
 
 .petal-group-mandala {
   transform-origin: 200px 250px;
+  opacity: 0.96;
 }
 
 .petal-core {
@@ -497,12 +517,16 @@ body {
 
 /* ─── HINT ─── */
 .flower-hint {
+  position: relative;
+  z-index: 2;
   font-family: 'Great Vibes', cursive;
-  font-size: 1.1rem;
-  color: #8FA888;
-  text-shadow: 0 1px 4px rgba(143,168,136,0.3);
+  font-size: clamp(1rem, 4.5vw, 1.2rem);
+  color: #6B8A6B;
+  text-shadow: 0 1px 5px rgba(255,255,255,0.75);
   opacity: 0;
   letter-spacing: 0.5px;
+  margin-top: -0.35rem;
+  padding: 0 0.75rem;
 }
 
 /* ═══════════════════════════════════════════════

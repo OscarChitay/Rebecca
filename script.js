@@ -36,13 +36,19 @@ function createBokehLights() {
 function createFloatingPetals() {
   var container = document.getElementById('invitationPetals');
   if (!container) return;
-  for (var i = 0; i < 18; i++) {
+  var petalTones = ['', 'petal-tone-ivory', 'petal-tone-rose'];
+  for (var i = 0; i < 12; i++) {
     var petal = document.createElement('div');
-    petal.className = 'floating-petal';
-    var size = 8 + Math.random() * 10;
-    var duration = 15 + Math.random() * 20;
-    var delay = Math.random() * 15;
-    petal.style.cssText = 'width:' + size + 'px;height:' + (size * 1.3) + 'px;left:' + (Math.random() * 100) + '%;animation-duration:' + duration + 's;animation-delay:' + delay + 's;';
+    var tone = petalTones[i % petalTones.length];
+    petal.className = 'floating-petal invitation-petal ' + tone;
+    var size = 9 + Math.random() * 9;
+    var duration = 14 + Math.random() * 10;
+    var delay = Math.random() * 14;
+    var driftMid = (Math.random() - 0.5) * 90;
+    var driftEnd = driftMid + (Math.random() - 0.5) * 100;
+    var spinMid = (Math.random() - 0.5) * 180;
+    var spinEnd = spinMid + (Math.random() - 0.5) * 220;
+    petal.style.cssText = 'width:' + size + 'px;height:' + (size * 1.3) + 'px;left:' + (Math.random() * 100) + '%;animation-duration:' + duration + 's;animation-delay:' + delay + 's;--drift-mid:' + driftMid + 'px;--drift-end:' + driftEnd + 'px;--spin-mid:' + spinMid + 'deg;--spin-end:' + spinEnd + 'deg;';
     container.appendChild(petal);
   }
 }
@@ -51,15 +57,17 @@ function createFloatingPetals() {
 var naturePlayer = null;
 var natureStarted = false;
 
-function startNatureSounds() {
-  if (natureStarted) return;
+function startNatureSounds(force) {
+  if (natureStarted && !force) return;
   if (naturePlayer && typeof naturePlayer.unMute === 'function') {
     naturePlayer.unMute();
+    naturePlayer.playVideo();
     natureStarted = true;
   } else {
     var check = setInterval(function () {
       if (naturePlayer && typeof naturePlayer.unMute === 'function') {
         naturePlayer.unMute();
+        naturePlayer.playVideo();
         natureStarted = true;
         clearInterval(check);
       }
@@ -71,7 +79,7 @@ function startNatureSounds() {
 /* ─── PRIMERA INTERACCIÓN (unmute audio) ─── */
 function initFirstInteraction() {
   function onFirstInteraction() {
-    startNatureSounds();
+    startNatureSounds(true);
     startMusic();
     document.removeEventListener('click', onFirstInteraction);
     document.removeEventListener('touchstart', onFirstInteraction);
@@ -110,9 +118,9 @@ function onYouTubeIframeAPIReady() {
     // Player de naturaleza: Río + pájaros
     naturePlayer = new YT.Player('youtube-player-nature', {
       videoId: 'PwSHOI7DwWM', height: 1, width: 1,
-      playerVars: { autoplay: 0, loop: 1, playlist: 'PwSHOI7DwWM', controls: 0, disablekb: 1, modestbranding: 1, rel: 0, fs: 0, iv_load_policy: 3, cc_load_policy: 0 },
+      playerVars: { autoplay: 1, loop: 1, playlist: 'PwSHOI7DwWM', controls: 0, disablekb: 1, modestbranding: 1, rel: 0, fs: 0, iv_load_policy: 3, cc_load_policy: 0 },
       events: {
-        onReady: function (e) { e.target.setVolume(30); e.target.mute(); e.target.playVideo(); },
+        onReady: function (e) { e.target.setVolume(30); e.target.mute(); e.target.playVideo(); startNatureSounds(); },
         onError: function (e) { console.log('YouTube nature error:', e.data); }
       }
     });
@@ -641,7 +649,7 @@ function initInvitation() {
 
   gsap.set(flowerWrapper, { opacity: 0 });
   gsap.set(halo, { opacity: 0, scale: 0.9 });
-  gsap.set(shimmerRings, { opacity: 0, scale: 0.96, strokeDashoffset: 500 });
+  gsap.set(shimmerRings, { opacity: 0, scale: 1, transformOrigin: '50% 50%', strokeDashoffset: 500 });
   gsap.set(allPetals, { opacity: 0, scale: 0.96 });
   gsap.set(dewDrops, { opacity: 0 });
   gsap.set(centerGroup, { opacity: 0, scale: 0.96 });
@@ -895,6 +903,7 @@ document.addEventListener('DOMContentLoaded', function () {
     invitation.style.display = 'flex';
     createInvitationEffects();
     initInvitation();
+    startNatureSounds();
     initFirstInteraction();
   } else {
     createFallingLeaves();
