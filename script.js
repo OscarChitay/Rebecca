@@ -250,6 +250,10 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(fireConfetti, 800);
   }
 
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+
   var enterBtn = document.getElementById('enterBtn');
   var mainContent = document.getElementById('mainContent');
   if (enterBtn && mainContent) {

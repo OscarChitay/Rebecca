@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Nunito', sans-serif;
   background-color: #fff8f0;
   background-image:
     radial-gradient(circle, #f48fb1 1px, transparent 1px),
@@ -103,7 +103,7 @@ body {
 }
 
 .hero-small {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1.2rem;
   color: #c2185b;
   margin-bottom: 0.5rem;
@@ -112,7 +112,7 @@ body {
 }
 
 .hero-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 2.2rem;
   font-weight: 700;
   color: #880e4f;
@@ -131,7 +131,7 @@ body {
 }
 
 .hero-date {
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 6px;
@@ -157,7 +157,7 @@ body {
   border: none;
   padding: 1rem 2.8rem;
   font-size: 1.1rem;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-weight: 600;
   border-radius: 50px;
   cursor: pointer;
@@ -201,7 +201,7 @@ body {
 .scroll-hint {
   position: absolute;
   bottom: 2rem;
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1.1rem;
   color: #c2185b;
   opacity: 0;
@@ -273,7 +273,7 @@ body {
 }
 
 .text-gracia {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 2rem;
   color: #c2185b;
   text-align: center;
@@ -286,7 +286,7 @@ body {
 }
 
 .text-big {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1.25rem;
   font-style: italic;
   line-height: 1.7;
@@ -359,7 +359,7 @@ body {
 }
 
 .gallery-caption {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1rem;
   color: #c2185b;
   text-align: center;
@@ -401,7 +401,7 @@ body {
   bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 0.95rem;
   color: #c2185b;
   background: rgba(255,255,255,0.85);
@@ -442,14 +442,14 @@ body {
 }
 
 .signature p:first-child {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1.1rem;
   color: #5d2e46;
   margin-bottom: 0.rem;
 }
 
 .signature-name {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 2.2rem;
   color: #c2185b;
 }
@@ -479,7 +479,7 @@ footer {
 }
 
 .footer-text {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1.2rem;
   margin-bottom: 0.4rem;
 }
@@ -766,7 +766,7 @@ footer {
 }
 
 .envelope-hint {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1rem;
   color: #fff;
   text-shadow: 0 1px 4px rgba(194, 24, 91, 0.3);
@@ -820,7 +820,7 @@ footer {
 /* ─── LETTER CONTENT ─── */
 .letter-content {
   padding: 1.8rem 1.4rem;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
   line-height: 1.75;
   color: #5d2e46;
@@ -831,7 +831,7 @@ footer {
 }
 
 .letter-greeting {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1.7rem;
   color: #c2185b;
   text-align: center;
@@ -839,7 +839,7 @@ footer {
 }
 
 .letter-section-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 0.9rem;
   font-weight: 700;
   color: #c2185b;
@@ -853,14 +853,14 @@ footer {
 }
 
 .letter-date {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: #880e4f;
 }
 
 .letter-time {
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   color: #c2185b;
@@ -886,13 +886,13 @@ footer {
 }
 
 .letter-signature p:first-child {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1rem;
   color: #5d2e46;
 }
 
 .letter-signature-name {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 1.8rem;
   color: #c2185b;
 }
@@ -905,6 +905,41 @@ footer {
 /* ─── FLOATING HEARTS ─── */
 .floating-heart {
   will-change: transform, opacity;
+}
+
+/* ─── LUCIDE ICONS ─── */
+.icon {
+  width: 20px;
+  height: 20px;
+  stroke: #c2185b;
+  stroke-width: 2;
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+  top: -1px;
+}
+
+.icon-sm {
+  width: 16px;
+  height: 16px;
+  top: -1px;
+}
+
+.letter-list li .icon-sm {
+  margin-right: 4px;
+}
+
+.letter-section-title .icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+}
+
+.letter-signature-name .icon {
+  width: 18px;
+  height: 18px;
+  fill: #c2185b;
+  top: -2px;
 }
 
 /* ─── INVITACIÓN RESPONSIVE ─── */
