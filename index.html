@@ -38,83 +38,246 @@
   </div>
 </div>
 
+<!-- ─── SVG FILTERS PARA AGUA ─── -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs>
+    <filter id="water-ripple">
+      <feTurbulence baseFrequency="0.01 0.05" numOctaves="2" result="turb" seed="2">
+        <animate attributeName="baseFrequency" dur="4s" values="0.01 0.05;0.02 0.08;0.01 0.05" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="turb" scale="12" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="glow-nature">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
+
 <!-- ─── INVITACIÓN ─── -->
 <div id="invitation">
+  <!-- Hojas cayendo -->
+  <div class="falling-leaves" id="fallingLeaves"></div>
+  <!-- Bokeh lights naturales -->
+  <div class="bokeh-container" id="bokehContainer"></div>
+  <!-- Pétalos flotantes -->
   <div class="invitation-petals" id="invitationPetals"></div>
 
-  <!-- ─── SOBRE SVG ─── -->
-  <div class="envelope-wrapper" id="envelope">
-    <svg viewBox="0 0 300 200" class="envelope-svg" xmlns="http://www.w3.org/2000/svg">
+  <!-- ─── FLOR ABIERTA ─── -->
+  <div class="flower-wrapper" id="flowerWrapper">
+    <svg viewBox="0 0 320 320" class="flower-svg" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="envBody" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#fce4ec"/>
-          <stop offset="100%" stop-color="#f8bbd0"/>
-        </linearGradient>
-        <linearGradient id="envFlap" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#f48fb1"/>
-          <stop offset="100%" stop-color="#ec407a"/>
-        </linearGradient>
-        <filter id="envShadow" x="-10%" y="-10%" width="120%" height="130%">
-          <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#c2185b" flood-opacity="0.15"/>
-        </filter>
+        <radialGradient id="flowerGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#F2C4CE" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#F2C4CE" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="petalGrad1" cx="50%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#F2C4CE"/>
+          <stop offset="100%" stop-color="#D4A0A4"/>
+        </radialGradient>
+        <radialGradient id="petalGrad2" cx="50%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#F8E8EE"/>
+          <stop offset="100%" stop-color="#F2C4CE"/>
+        </radialGradient>
+        <radialGradient id="petalGrad3" cx="50%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#C9B1D9"/>
+          <stop offset="100%" stop-color="#A89BB8"/>
+        </radialGradient>
+        <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#C9A96E"/>
+          <stop offset="60%" stop-color="#D4A0A4"/>
+          <stop offset="100%" stop-color="#C9A96E"/>
+        </radialGradient>
       </defs>
-      <!-- Sombra del sobre -->
-      <rect x="4" y="64" width="292" height="136" rx="8" fill="rgba(194,24,91,0.08)"/>
-      <!-- Cuerpo del sobre -->
-      <rect class="env-body" x="0" y="60" width="300" height="140" rx="8" fill="url(#envBody)"/>
-      <!-- Triángulo interior (doblado) -->
-      <path class="env-inner" d="M0,60 L150,140 L300,60" fill="#fff" opacity="0.25"/>
-      <!-- Solapa (morphable) -->
-      <path class="env-flap" d="M0,60 L150,0 L300,60 Z" fill="url(#envFlap)"/>
-      <!-- Sello corazón -->
-      <g class="env-seal" transform="translate(150,78)">
-        <circle r="16" fill="#c2185b" opacity="0.9"/>
-        <path d="M0,-7 C-3.5,-14 -14,-14 -14,-7 C-14,0 0,10 0,10 C0,10 14,0 14,-7 C14,-14 3.5,-14 0,-7 Z" fill="#fff"/>
+      <circle cx="160" cy="160" r="140" fill="url(#flowerGlow)" class="flower-halo"/>
+      <g class="petal-group-outer" opacity="0.7">
+        <ellipse cx="160" cy="70" rx="32" ry="60" fill="url(#petalGrad2)" class="petal petal-outer" transform="rotate(0,160,160)"/>
+        <ellipse cx="160" cy="70" rx="32" ry="60" fill="url(#petalGrad2)" class="petal petal-outer" transform="rotate(60,160,160)"/>
+        <ellipse cx="160" cy="70" rx="32" ry="60" fill="url(#petalGrad2)" class="petal petal-outer" transform="rotate(120,160,160)"/>
+        <ellipse cx="160" cy="70" rx="32" ry="60" fill="url(#petalGrad2)" class="petal petal-outer" transform="rotate(180,160,160)"/>
+        <ellipse cx="160" cy="70" rx="32" ry="60" fill="url(#petalGrad2)" class="petal petal-outer" transform="rotate(240,160,160)"/>
+        <ellipse cx="160" cy="70" rx="32" ry="60" fill="url(#petalGrad2)" class="petal petal-outer" transform="rotate(300,160,160)"/>
       </g>
+      <g class="petal-group-mid">
+        <ellipse cx="160" cy="85" rx="28" ry="50" fill="url(#petalGrad1)" class="petal petal-mid" transform="rotate(30,160,160)"/>
+        <ellipse cx="160" cy="85" rx="28" ry="50" fill="url(#petalGrad1)" class="petal petal-mid" transform="rotate(90,160,160)"/>
+        <ellipse cx="160" cy="85" rx="28" ry="50" fill="url(#petalGrad1)" class="petal petal-mid" transform="rotate(150,160,160)"/>
+        <ellipse cx="160" cy="85" rx="28" ry="50" fill="url(#petalGrad1)" class="petal petal-mid" transform="rotate(210,160,160)"/>
+        <ellipse cx="160" cy="85" rx="28" ry="50" fill="url(#petalGrad1)" class="petal petal-mid" transform="rotate(270,160,160)"/>
+        <ellipse cx="160" cy="85" rx="28" ry="50" fill="url(#petalGrad1)" class="petal petal-mid" transform="rotate(330,160,160)"/>
+      </g>
+      <g class="petal-group-inner">
+        <ellipse cx="160" cy="100" rx="22" ry="38" fill="url(#petalGrad3)" class="petal petal-inner" transform="rotate(15,160,160)"/>
+        <ellipse cx="160" cy="100" rx="22" ry="38" fill="url(#petalGrad3)" class="petal petal-inner" transform="rotate(75,160,160)"/>
+        <ellipse cx="160" cy="100" rx="22" ry="38" fill="url(#petalGrad3)" class="petal petal-inner" transform="rotate(135,160,160)"/>
+        <ellipse cx="160" cy="100" rx="22" ry="38" fill="url(#petalGrad3)" class="petal petal-inner" transform="rotate(195,160,160)"/>
+        <ellipse cx="160" cy="100" rx="22" ry="38" fill="url(#petalGrad3)" class="petal petal-inner" transform="rotate(255,160,160)"/>
+        <ellipse cx="160" cy="100" rx="22" ry="38" fill="url(#petalGrad3)" class="petal petal-inner" transform="rotate(315,160,160)"/>
+      </g>
+      <circle cx="160" cy="160" r="28" fill="url(#centerGrad)" class="flower-center"/>
+      <circle cx="160" cy="160" r="14" fill="#FAF4EC" opacity="0.5" class="flower-center-inner"/>
     </svg>
-    <p class="envelope-hint">Toca para abrir</p>
+    <p class="flower-hint">Toca para abrir</p>
   </div>
 
-  <!-- ─── CARTA ─── -->
-  <div class="letter-wrapper" id="letterWrapper">
-    <div class="letter-card">
-      <div class="letter-content" id="letterContent">
-        <p class="letter-greeting">Hola amor.</p>
+  <!-- ─── SLIDES ─── -->
+  <div class="slides-container" id="slidesContainer">
 
-        <p>Quiero invitarla a pasar un día diferente conmigo. No le voy a contar mucho sobre lo que tengo planeado. Solo quiero que ese día se deje llevar, que disfrute conmigo y que me regale unas horas para compartir, conversar, reírnos y crear un recuerdo bonito juntos.</p>
+    <!-- Barra de progreso -->
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
 
-        <p class="letter-section-title"><i data-lucide="sun" class="icon"></i> NUESTRO DÍA</p>
-        <div class="letter-detail">
-          <p class="letter-date">Domingo 20 de septiembre</p>
-          <p class="letter-time">7:00 AM</p>
-        </div>
-
-        <p>Quiero que ese día sea tranquilo, bonito y diferente. Vamos a salir, conocer un lugar especial, pasar tiempo juntos y simplemente disfrutar de estar los dos.</p>
-
-        <p class="letter-section-title"><i data-lucide="backpack" class="icon"></i> ¿Qué debe llevar?</p>
-        <ul class="letter-list">
-          <li><i data-lucide="shirt" class="icon icon-sm"></i> Outfit tipo veraniego</li>
-          <li><i data-lucide="glasses" class="icon icon-sm"></i> Gafas de sol</li>
-          <li><i data-lucide="sun" class="icon icon-sm"></i> Bloqueador</li>
-          <li><i data-lucide="droplets" class="icon icon-sm"></i> Traje de baño</li>
-          <li><i data-lucide="shirt" class="icon icon-sm"></i> Una muda de ropa</li>
-          <li><i data-lucide="heart" class="icon icon-sm"></i> Muchas ganas de pasarla bien conmigo</li>
-        </ul>
-
-        <p>Sí, vamos a nadar un ratito, así que venga preparada. <i data-lucide="smile" class="icon icon-sm"></i></p>
-
-        <p class="letter-section-title"><i data-lucide="map-pin" class="icon"></i> ¿A dónde vamos?</p>
-        <p>Eso todavía no se lo voy a decir. Pero confíe en mí. Solo puedo decirle que nos espera un lugar muy bonito, naturaleza, agua y un día que espero que podamos recordar por mucho tiempo.</p>
-
-        <p class="letter-section-title"><i data-lucide="lock" class="icon"></i> Y una última cosa...</p>
-        <p>No haga demasiadas preguntas. Déjeme encargarme del resto. Usted solamente tiene que estar lista el domingo a las 7:00 AM.</p>
-
-        <div class="letter-signature">
-          <p>Con cariño,</p>
-          <p class="letter-signature-name">Oscar <i data-lucide="heart" class="icon"></i></p>
-        </div>
+    <!-- Slide 1: Saludo -->
+    <div class="slide slide-nature-1" id="slide-0">
+      <div class="slide-bg-decor">
+        <svg class="leaf-corner leaf-tl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,0 Q40,20 20,60 Q10,40 30,30 Q20,10 0,0 Z" fill="#8FA888" opacity="0.15"/>
+          <path d="M10,0 Q50,30 25,70 Q15,50 35,35 Q25,15 10,0 Z" fill="#8FA888" opacity="0.1"/>
+        </svg>
+        <svg class="leaf-corner leaf-br" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120,120 Q80,100 100,60 Q110,80 90,90 Q100,110 120,120 Z" fill="#8FA888" opacity="0.15"/>
+          <path d="M110,120 Q70,90 95,50 Q105,70 85,85 Q95,105 110,120 Z" fill="#8FA888" opacity="0.1"/>
+        </svg>
+      </div>
+      <div class="slide-content slide-greeting">
+        <p class="slide-text-greeting">Hola, mi amor.</p>
+        <div class="slide-heart">💗</div>
       </div>
     </div>
+
+    <!-- Slide 2: Apertura -->
+    <div class="slide slide-nature-2" id="slide-1">
+      <div class="slide-bg-decor">
+        <svg class="leaf-corner leaf-tr" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120,0 Q80,20 100,60 Q110,40 90,30 Q100,10 120,0 Z" fill="#F2C4CE" opacity="0.15"/>
+        </svg>
+      </div>
+      <div class="slide-content slide-opening">
+        <p class="slide-text-body" id="typewriter-text">Tengo algo especial preparado para usted. No le voy a contar mucho porque parte de la magia es dejarse sorprender, solo quiero que este domingo se levante con ilusión porque nos espera un día diferente y bonito.</p>
+      </div>
+    </div>
+
+    <!-- Slide 3: Fecha -->
+    <div class="slide slide-nature-3" id="slide-2">
+      <div class="slide-bg-decor">
+        <svg class="leaf-corner leaf-tl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,0 Q40,20 20,60 Q10,40 30,30 Q20,10 0,0 Z" fill="#C9A96E" opacity="0.12"/>
+        </svg>
+        <svg class="leaf-corner leaf-br" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120,120 Q80,100 100,60 Q110,80 90,90 Q100,110 120,120 Z" fill="#C9A96E" opacity="0.12"/>
+        </svg>
+      </div>
+      <div class="slide-content slide-date">
+        <div class="slide-icon-big">
+          <i data-lucide="sun" class="icon-hero"></i>
+        </div>
+        <p class="slide-day">DOMINGO 20</p>
+        <p class="slide-month">DE SEPTIEMBRE</p>
+        <div class="slide-time-divider"></div>
+        <p class="slide-time">7:00 AM</p>
+      </div>
+    </div>
+
+    <!-- Slide 4: Lista -->
+    <div class="slide slide-nature-4" id="slide-3">
+      <div class="slide-bg-decor">
+        <svg class="leaf-corner leaf-tr" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120,0 Q80,20 100,60 Q110,40 90,30 Q100,10 120,0 Z" fill="#8FA888" opacity="0.12"/>
+        </svg>
+        <svg class="leaf-corner leaf-bl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,120 Q40,100 20,60 Q10,80 30,90 Q20,110 0,120 Z" fill="#8FA888" opacity="0.12"/>
+        </svg>
+      </div>
+      <div class="slide-content slide-list">
+        <p class="slide-title"><i data-lucide="backpack" class="icon"></i> ¿Qué debe llevar?</p>
+        <ul class="slide-checklist">
+          <li class="checklist-item"><i data-lucide="shirt" class="icon icon-sm"></i> Outfit tipo veraniego</li>
+          <li class="checklist-item"><i data-lucide="glasses" class="icon icon-sm"></i> Gafas de sol</li>
+          <li class="checklist-item"><i data-lucide="sun" class="icon icon-sm"></i> Bloqueador</li>
+          <li class="checklist-item"><i data-lucide="droplets" class="icon icon-sm"></i> Traje de baño</li>
+          <li class="checklist-item"><i data-lucide="shirt" class="icon icon-sm"></i> Una muda de ropa extra</li>
+          <li class="checklist-item"><i data-lucide="heart" class="icon icon-sm"></i> Muchas ganas de pasarla bien conmigo</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Slide 5: Secreto -->
+    <div class="slide slide-nature-5" id="slide-4">
+      <div class="slide-bg-decor">
+        <svg class="leaf-corner leaf-tl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,0 Q40,20 20,60 Q10,40 30,30 Q20,10 0,0 Z" fill="#C9B1D9" opacity="0.15"/>
+        </svg>
+      </div>
+      <div class="slide-content slide-secret">
+        <div class="slide-icon-big">
+          <i data-lucide="map-pin" class="icon-hero"></i>
+        </div>
+        <p class="slide-title">¿A dónde vamos?</p>
+        <p class="slide-text-body">Ese es mi secreto. Solo le digo que es un lugar bonito, con naturaleza y un rincón donde vamos a estar tranquilos los dos.</p>
+        <p class="slide-italic">Confíe en mí.</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: Última cosa -->
+    <div class="slide slide-nature-6" id="slide-5">
+      <div class="slide-bg-decor">
+        <svg class="leaf-corner leaf-br" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120,120 Q80,100 100,60 Q110,80 90,90 Q100,110 120,120 Z" fill="#D4A0A4" opacity="0.12"/>
+        </svg>
+      </div>
+      <div class="slide-content slide-last">
+        <div class="slide-icon-big">
+          <i data-lucide="lock" class="icon-hero"></i>
+        </div>
+        <p class="slide-title">Y una última cosa...</p>
+        <p class="slide-text-body">No le preocupe si no sabe qué se va a hacer. Yo me encargo de todo.</p>
+        <p class="slide-text-body slide-highlight">Usted solamente tiene que aparecer con ropa bonita, traje de baño y muchas ganas de vivir un día que no vamos a olvidar.</p>
+      </div>
+    </div>
+
+    <!-- Slide 7: Firma -->
+    <div class="slide slide-nature-7" id="slide-6">
+      <div class="slide-bg-decor">
+        <svg class="leaf-corner leaf-tl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,0 Q40,20 20,60 Q10,40 30,30 Q20,10 0,0 Z" fill="#F2C4CE" opacity="0.15"/>
+        </svg>
+        <svg class="leaf-corner leaf-tr" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120,0 Q80,20 100,60 Q110,40 90,30 Q100,10 120,0 Z" fill="#F2C4CE" opacity="0.15"/>
+        </svg>
+        <svg class="leaf-corner leaf-bl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,120 Q40,100 20,60 Q10,80 30,90 Q20,110 0,120 Z" fill="#F2C4CE" opacity="0.15"/>
+        </svg>
+        <svg class="leaf-corner leaf-br" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120,120 Q80,100 100,60 Q110,80 90,90 Q100,110 120,120 Z" fill="#F2C4CE" opacity="0.15"/>
+        </svg>
+      </div>
+      <div class="slide-content slide-signature">
+        <p class="slide-text-closing">Con todo mi cariño,</p>
+        <p class="slide-name">Oscar</p>
+        <div class="slide-final-heart">💗</div>
+      </div>
+    </div>
+
+    <!-- Puntos de navegación -->
+    <div class="nav-dots" id="navDots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+
+    <!-- Flecha de avance -->
+    <div class="slide-arrow" id="slideArrow">
+      <i data-lucide="chevron-down" class="arrow-icon"></i>
+    </div>
+
   </div>
 </div>
 
@@ -138,8 +301,15 @@
 <div id="youtube-player" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;overflow:hidden;z-index:-1;" aria-hidden="true"></div>
 
 <!-- ─── SCRIPTS ─── -->
+<!-- Audio naturaleza -->
+<audio id="natureAudio" loop preload="auto">
+  <source src="https://cdn.freesound.org/previews/526/526955_11861866-lq.mp3" type="audio/mpeg">
+</audio>
+<audio id="waterAudio" loop preload="auto" volume="0.3">
+  <source src="https://cdn.freesound.org/previews/341/341695_5858296-lq.mp3" type="audio/mpeg">
+</audio>
+
 <script src="https://unpkg.com/lucide@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MorphSVG.min.js"></script>
