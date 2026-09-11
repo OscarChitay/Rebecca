@@ -448,26 +448,18 @@ body {
   stroke-dashoffset: 500;
 }
 
-/* ─── PÉTALOS ─── */
+/* ─── PÉTALOS MANDALA ─── */
 .petal {
   opacity: 0;
   transform-origin: 200px 250px;
 }
 
-.petal-extra-outer {
-  filter: url(#petalShadow);
+.petal-mandala {
+  transform-origin: 200px 250px;
 }
 
-.petal-outer {
-  filter: url(#petalShadow);
-}
-
-.petal-mid {
-  filter: url(#petalShadow);
-}
-
-.petal-inner {
-  filter: url(#petalShadow);
+.petal-group-mandala {
+  transform-origin: 200px 250px;
 }
 
 .petal-core {

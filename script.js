@@ -627,11 +627,8 @@ function initInvitation() {
   var leaves = flowerWrapper.querySelectorAll('.leaf');
   var halo = flowerWrapper.querySelector('.flower-halo');
   var shimmerRings = flowerWrapper.querySelectorAll('.shimmer-ring');
-  var petalExtraOuter = flowerWrapper.querySelectorAll('.petal-extra-outer');
-  var petalOuter = flowerWrapper.querySelectorAll('.petal-outer');
-  var petalMid = flowerWrapper.querySelectorAll('.petal-mid');
-  var petalInner = flowerWrapper.querySelectorAll('.petal-inner');
-  var petalCore = flowerWrapper.querySelectorAll('.petal-core');
+  var mandalaGroups = flowerWrapper.querySelectorAll('.petal-group-mandala');
+  var allPetals = flowerWrapper.querySelectorAll('.petal-mandala');
   var dewDrops = flowerWrapper.querySelector('.dew-drops');
   var centerGroup = flowerWrapper.querySelector('.flower-center-group');
   var stamens = flowerWrapper.querySelectorAll('.stamen');
@@ -647,11 +644,7 @@ function initInvitation() {
   gsap.set(leaves, { opacity: 0, scale: 0 });
   gsap.set(halo, { opacity: 0, scale: 0.8 });
   gsap.set(shimmerRings, { opacity: 0, scale: 0.5, strokeDashoffset: 500 });
-  gsap.set(petalExtraOuter, { opacity: 0, scale: 0 });
-  gsap.set(petalOuter, { opacity: 0, scale: 0 });
-  gsap.set(petalMid, { opacity: 0, scale: 0 });
-  gsap.set(petalInner, { opacity: 0, scale: 0 });
-  gsap.set(petalCore, { opacity: 0, scale: 0 });
+  gsap.set(allPetals, { opacity: 0, scale: 0 });
   gsap.set(dewDrops, { opacity: 0 });
   gsap.set(centerGroup, { opacity: 0, scale: 0 });
   gsap.set(stamens, { opacity: 0, scale: 0 });
@@ -708,64 +701,27 @@ function initInvitation() {
   }, '-=0.1');
 
   // ═══════════════════════════════════════════
-  // FASE 3: PÉTALOS CORE (1.0 - 1.4s)
+  // FASE 3-10: MANDALA PÉTALOS (1.0 - 3.0s)
+  // 8 capas, cada una aparece con stagger
   // ═══════════════════════════════════════════
-  tlIntro.to(petalCore, {
-    opacity: 1,
-    scale: 1,
-    duration: 0.4,
-    stagger: 0.06,
-    ease: 'back.out(2.5)'
-  }, '-=0.1');
+  var mandalaDelays = [0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.08, 0.08];
+  var mandalaDurations = [0.6, 0.5, 0.5, 0.45, 0.4, 0.35, 0.3, 0.25];
+  var mandalaEases = ['back.out(1.2)', 'back.out(1.4)', 'back.out(1.6)', 'back.out(1.8)', 'back.out(2)', 'back.out(2.2)', 'back.out(2.5)', 'back.out(3)'];
+
+  mandalaGroups.forEach(function(group, i) {
+    var petalsInGroup = group.querySelectorAll('.petal-mandala');
+    tlIntro.to(petalsInGroup, {
+      opacity: 1,
+      scale: 1,
+      duration: mandalaDurations[i],
+      stagger: 0.04,
+      ease: mandalaEases[i]
+    }, i === 0 ? '-=0.1' : '-=' + mandalaDelays[i]);
+  });
 
   // ═══════════════════════════════════════════
-  // FASE 4: PÉTALOS INTERNOS (1.2 - 1.7s)
+  // FASE 11: EFECTOS PREMIUM (2.8 - 3.5s)
   // ═══════════════════════════════════════════
-  tlIntro.to(petalInner, {
-    opacity: 1,
-    scale: 1,
-    duration: 0.5,
-    stagger: 0.07,
-    ease: 'back.out(2)'
-  }, '-=0.1');
-
-  // ═══════════════════════════════════════════
-  // FASE 5: PÉTALOS MEDIOS (1.5 - 2.0s)
-  // ═══════════════════════════════════════════
-  tlIntro.to(petalMid, {
-    opacity: 1,
-    scale: 1,
-    duration: 0.5,
-    stagger: 0.07,
-    ease: 'back.out(1.8)'
-  }, '-=0.2');
-
-  // ═══════════════════════════════════════════
-  // FASE 6: PÉTALOS EXTERIORES (1.8 - 2.4s)
-  // ═══════════════════════════════════════════
-  tlIntro.to(petalOuter, {
-    opacity: 1,
-    scale: 1,
-    duration: 0.6,
-    stagger: 0.08,
-    ease: 'back.out(1.4)'
-  }, '-=0.2');
-
-  // ═══════════════════════════════════════════
-  // FASE 7: PÉTALOS EXTRA-EXTERIORES (2.1 - 2.8s)
-  // ═══════════════════════════════════════════
-  tlIntro.to(petalExtraOuter, {
-    opacity: 1,
-    scale: 1,
-    duration: 0.6,
-    stagger: 0.08,
-    ease: 'back.out(1.2)'
-  }, '-=0.2');
-
-  // ═══════════════════════════════════════════
-  // FASE 8: EFECTOS PREMIUM (2.5 - 3.2s)
-  // ═══════════════════════════════════════════
-  // Shimmer rings se expanden
   tlIntro.to(shimmerRings, {
     opacity: 0.5,
     scale: 1,
@@ -775,20 +731,17 @@ function initInvitation() {
     ease: 'power2.out'
   }, '-=0.3');
 
-  // Gotas de rocío aparecen
   tlIntro.to(dewDrops, {
     opacity: 1,
     duration: 0.5,
     ease: 'power2.out'
   }, '-=0.4');
 
-  // Partículas doradas iniciales
   tlIntro.add(function () {
-    createFlowerParticles(8, 'gold');
-    createFlowerParticles(4, 'pink');
+    createFlowerParticles(10, 'gold');
+    createFlowerParticles(6, 'pink');
   }, '-=0.4');
 
-  // Hint aparece
   tlIntro.to(hint, {
     opacity: 1,
     duration: 0.4,
@@ -796,10 +749,9 @@ function initInvitation() {
   }, '-=0.1');
 
   // ═══════════════════════════════════════════
-  // FASE 9: BREATHING LOOP (después de apertura)
+  // FASE 12: BREATHING LOOP
   // ═══════════════════════════════════════════
   tlIntro.add(function () {
-    // Halo pulsa suavemente
     gsap.to(halo, {
       scale: 1.05,
       opacity: 0.6,
@@ -809,57 +761,19 @@ function initInvitation() {
       ease: 'sine.inOut'
     });
 
-    // Pétalos extra-externos respiran
-    gsap.to(petalExtraOuter, {
-      scale: 1.015,
-      duration: 2.8,
-      yoyo: true,
-      repeat: -1,
-      ease: 'sine.inOut',
-      stagger: 0.25
+    // Cada capa del mandala respira con ritmo diferente
+    mandalaGroups.forEach(function(group, i) {
+      var petalsInGroup = group.querySelectorAll('.petal-mandala');
+      gsap.to(petalsInGroup, {
+        scale: 1.01 + (i * 0.003),
+        duration: 1.8 + (i * 0.3),
+        yoyo: true,
+        repeat: -1,
+        ease: 'sine.inOut',
+        stagger: 0.08
+      });
     });
 
-    // Pétalos externos respiran
-    gsap.to(petalOuter, {
-      scale: 1.02,
-      duration: 2.2,
-      yoyo: true,
-      repeat: -1,
-      ease: 'sine.inOut',
-      stagger: 0.2
-    });
-
-    // Pétalos medios respiran
-    gsap.to(petalMid, {
-      scale: 1.015,
-      duration: 2.6,
-      yoyo: true,
-      repeat: -1,
-      ease: 'sine.inOut',
-      stagger: 0.15
-    });
-
-    // Pétalos internos respiran
-    gsap.to(petalInner, {
-      scale: 1.025,
-      duration: 1.9,
-      yoyo: true,
-      repeat: -1,
-      ease: 'sine.inOut',
-      stagger: 0.1
-    });
-
-    // Pétalos core respiran
-    gsap.to(petalCore, {
-      scale: 1.03,
-      duration: 1.7,
-      yoyo: true,
-      repeat: -1,
-      ease: 'sine.inOut',
-      stagger: 0.08
-    });
-
-    // Shimmer rings pulsan
     gsap.to(shimmerRings, {
       opacity: 0.3,
       duration: 2,
@@ -869,7 +783,6 @@ function initInvitation() {
       stagger: 0.3
     });
 
-    // Rotación muy sutil de toda la flor
     gsap.to(flowerWrapper.querySelector('.flower-svg'), {
       rotation: 2,
       duration: 8,
@@ -880,23 +793,92 @@ function initInvitation() {
   });
 
   // ═══════════════════════════════════════════
-  // FASE 8: CLICK PARA ABRIR
+  // CLICK PARA ABRIR
   // ═══════════════════════════════════════════
   flowerWrapper.addEventListener('click', function openFlower() {
     flowerWrapper.removeEventListener('click', openFlower);
 
     var tlOpen = gsap.timeline();
 
-    // Ocultar hint
     tlOpen.to(hint, { opacity: 0, duration: 0.15 });
 
-    // Shimmer se intensifica
     tlOpen.to(shimmerRings, {
       opacity: 0.8,
       scale: 1.8,
       duration: 0.5,
       stagger: 0.05,
       ease: 'power2.out'
+    });
+
+    tlOpen.add(function () {
+      createFlowerParticles(15, 'gold');
+      createFlowerParticles(10, 'pink');
+      createFlowerParticles(5, 'white');
+    }, '-=0.3');
+
+    // Todas las capas mandala se expanden y desaparecen
+    mandalaGroups.forEach(function(group, i) {
+      var petalsInGroup = group.querySelectorAll('.petal-mandala');
+      tlOpen.to(petalsInGroup, {
+        scale: 1.5 + (i * 0.15),
+        opacity: 0,
+        duration: 0.4,
+        stagger: 0.02,
+        ease: 'power2.out'
+      }, i === 0 ? '-=0.2' : '-=0.35');
+    });
+
+    tlOpen.to(centerGroup, {
+      scale: 2.5,
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power2.in'
+    }, '-=0.3');
+
+    tlOpen.to(halo, {
+      scale: 2.5,
+      opacity: 0,
+      duration: 0.5,
+      ease: 'power2.in'
+    }, '-=0.2');
+
+    tlOpen.to(shimmerRings, {
+      scale: 3,
+      opacity: 0,
+      duration: 0.6,
+      ease: 'power2.in'
+    }, '-=0.3');
+
+    tlOpen.to(stem, {
+      opacity: 0,
+      y: -20,
+      duration: 0.4,
+      ease: 'power2.in'
+    }, '-=0.4');
+
+    tlOpen.to(leaves, {
+      opacity: 0,
+      scale: 0.5,
+      duration: 0.3,
+      ease: 'power2.in'
+    }, '-=0.3');
+
+    tlOpen.to(dewDrops, {
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power2.in'
+    }, '-=0.3');
+
+    tlOpen.to(flowerWrapper, {
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power2.in'
+    }, '-=0.1');
+
+    tlOpen.add(function () {
+      slidesContainer.classList.add('active');
+      startNatureSounds();
+      if (typeof slideSystem !== 'undefined') slideSystem.init();
     });
 
     // Más partículas

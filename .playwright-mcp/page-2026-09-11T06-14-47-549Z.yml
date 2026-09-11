@@ -1,0 +1,47 @@
+- generic [active] [ref=f5e1]:
+  - paragraph [ref=f5e27] [cursor=pointer]: Toca para abrir
+  - iframe [aria-hidden] [ref=f5e28]:
+    - generic [ref=f6e1]:
+      - generic "YouTube Video Player" [ref=f6e3]:
+        - alert [ref=f6e4]:
+          - generic [ref=f6e5]: This video is unavailable
+          - link "Visit YouTube to search for more videos" [ref=f6e8] [cursor=pointer]:
+            - /url: https://www.youtube.com
+      - dialog "This video is unavailable" [ref=f6e10]:
+        - generic [ref=f6e13]:
+          - img "YouTube Logo" [ref=f6e14]
+          - generic: This video is unavailable
+          - link "Watch on YouTube" [ref=f6e15] [cursor=pointer]:
+            - /url: http://www.youtube.com/watch?v=F1COh7t3el4
+  - iframe [aria-hidden] [ref=f5e29]:
+    - generic [ref=f7e1]:
+      - generic "YouTube Video Player" [ref=f7e3]
+      - generic [ref=f7e5]:
+        - generic:
+          - generic:
+            - button "Hide player controls" [ref=f7e6] [cursor=pointer]
+            - generic [ref=f7e8]:
+              - generic:
+                - generic [ref=f7e13]:
+                  - generic [ref=f7e14]:
+                    - link "Forest River Nature Sounds-Mountain Stream Waterfall-8 Hr Relaxing Birds & Water Sounds for Sleeping":
+                      - /url: https://www.youtube.com/watch?v=PwSHOI7DwWM
+                    - link "johnnielawson":
+                      - /url: /channel/UC4UWbQ23IbWwU-XG7XIWxvQ
+                  - generic [ref=f7e15]:
+                    - button [ref=f7e16] [cursor=pointer]
+                    - generic [ref=f7e18]:
+                      - generic: johnnielawson
+                      - generic: 458K subscribers
+                - generic [ref=f7e19]:
+                  - generic:
+                    - generic:
+                      - button "Previous video"
+                    - button "Rewind 10 seconds"
+                    - generic:
+                      - button "Play video"
+                    - button "Fast forward 10 seconds"
+                    - generic:
+                      - button "Next video" [disabled]
+              - link "Watch on YouTube" [ref=f7e25] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=PwSHOI7DwWM
