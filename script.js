@@ -59,24 +59,33 @@ function createFloatingPetals() {
 /* ─── SONIDOS NATURALES (YouTube Player) ─── */
 var naturePlayer = null;
 var natureStarted = false;
+var natureStartCheck = null;
 
 function startNatureSounds(force) {
   if (natureStarted && !force) return;
-  if (naturePlayer && typeof naturePlayer.unMute === 'function') {
+
+  function tryStartNature() {
+    if (!naturePlayer || typeof naturePlayer.unMute !== 'function') return false;
     naturePlayer.unMute();
     naturePlayer.playVideo();
     natureStarted = true;
-  } else {
-    var check = setInterval(function () {
-      if (naturePlayer && typeof naturePlayer.unMute === 'function') {
-        naturePlayer.unMute();
-        naturePlayer.playVideo();
-        natureStarted = true;
-        clearInterval(check);
-      }
-    }, 300);
-    setTimeout(function () { clearInterval(check); }, 10000);
+    return true;
   }
+
+  if (tryStartNature()) return;
+  if (natureStartCheck) clearInterval(natureStartCheck);
+  natureStartCheck = setInterval(function () {
+    if (tryStartNature()) {
+      clearInterval(natureStartCheck);
+      natureStartCheck = null;
+    }
+  }, 300);
+  setTimeout(function () {
+    if (natureStartCheck) {
+      clearInterval(natureStartCheck);
+      natureStartCheck = null;
+    }
+  }, 30000);
 }
 
 /* ─── PRIMERA INTERACCIÓN (unmute audio) ─── */
@@ -133,10 +142,17 @@ function onYouTubeIframeAPIReady() {
 function startMusic() {
   if (musicStarted) return;
   if (player && typeof player.unMute === 'function') {
-    player.unMute(); musicStarted = true;
+    player.unMute();
+    player.playVideo();
+    musicStarted = true;
   } else {
     var check = setInterval(function () {
-      if (player && typeof player.unMute === 'function') { player.unMute(); musicStarted = true; clearInterval(check); }
+      if (player && typeof player.unMute === 'function') {
+        player.unMute();
+        player.playVideo();
+        musicStarted = true;
+        clearInterval(check);
+      }
     }, 300);
     setTimeout(function () { clearInterval(check); }, 10000);
   }
